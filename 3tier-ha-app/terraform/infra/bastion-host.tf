@@ -5,6 +5,7 @@ resource "aws_instance" "bastion-host" {
 
   associate_public_ip_address = true
 
+  # Bastion sits in a public subnet
   subnet_id              = module.vpc.public_subnets[0] # Public subnet
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
   availability_zone      = module.vpc.azs[0]

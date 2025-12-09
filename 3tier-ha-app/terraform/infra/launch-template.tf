@@ -1,5 +1,8 @@
+# SSH key pair used for connecting to EC2 instances
 resource "aws_key_pair" "key-pair" {
   key_name   = "${var.name}-ssh-key"
+
+  # Public SSH key (private key stays on your machine)
   public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG4yOuAYryxGtqUh8h+A7iyMbHozuE7qSS0d5mmD7Kvi da_wsl@DA-PC"
 
   tags = {
@@ -8,7 +11,7 @@ resource "aws_key_pair" "key-pair" {
   }
 }
 
-# EC2 Security Group 
+# Security Group for EC2 instances (Application layer)
 resource "aws_security_group" "ec2_sg" {
   name        = "${var.name}-ec2-sg"
   description = "Allow traffic from ALB"
@@ -22,6 +25,7 @@ resource "aws_security_group" "ec2_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Allow HTTP traffic ONLY from ALB Security Group
   ingress {
     description     = "Allow HTTP from ALB only"
     from_port       = 80
@@ -30,6 +34,7 @@ resource "aws_security_group" "ec2_sg" {
     security_groups = [aws_security_group.lb_sg.id]
   }
 
+  # Allow all outbound traffic
   egress {
     from_port   = 0
     to_port     = 0
@@ -43,28 +48,29 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-# Instance Profile for the EC2 instances
+# Instance Profile attaches IAM Role to EC2 instances
 resource "aws_iam_instance_profile" "employee_instance_profile" {
   name = "${var.name}-employee-instance-profile"
   role = aws_iam_role.employee_role.name
 }
 
-# Launch Template
+# Launch Template defining EC2 configuration
 resource "aws_launch_template" "launch_template" {
   name = "${var.name}-launch-template"
 
   # Comment when using spot instances
+  # Prevent stop/terminate via AWS API (extra safety)
   disable_api_stop        = true
   disable_api_termination = true
 
-  ebs_optimized = true
+  ebs_optimized = true    # Enable EBS optimization for performance
 
   image_id      = var.ami_id
   instance_type = var.instance_type
 
-  key_name = aws_key_pair.key-pair.key_name
+  key_name = aws_key_pair.key-pair.key_name   # SSH key for access
 
-  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+  vpc_security_group_ids = [aws_security_group.ec2_sg.id] # Attach EC2 Security Group
 
   # user_data = base64encode(<<-EOF
   #   #!/bin/bash
@@ -76,6 +82,7 @@ resource "aws_launch_template" "launch_template" {
   # EOF
   # )
 
+  # Run initialization script at instance launch
   user_data = base64encode(templatefile("${path.module}/../install_app.tpl", {
     default_aws_region  = data.aws_region.current.id,
     images_bucket       = aws_s3_bucket.employee_photos_bucket.bucket,
@@ -86,10 +93,12 @@ resource "aws_launch_template" "launch_template" {
   #   market_type = "spot"
   # }
 
+  # Attach IAM role permissions to EC2 instances
   iam_instance_profile {
       name = aws_iam_instance_profile.employee_instance_profile.name
   }
 
+  # Root volume configuration
   block_device_mappings {
     device_name = "/dev/xvda"
 
@@ -98,6 +107,7 @@ resource "aws_launch_template" "launch_template" {
     }
   }
 
+  # Enable detailed CloudWatch monitoring
   monitoring {
     enabled = true
   }

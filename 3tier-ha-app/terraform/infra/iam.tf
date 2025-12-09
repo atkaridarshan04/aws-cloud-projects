@@ -1,4 +1,4 @@
-# IAM Role
+# IAM Role assumed by EC2 instances
 resource "aws_iam_role" "employee_role" {
   name = "${var.name}-EmployeeDirectoryAppRole"
 
@@ -20,7 +20,7 @@ resource "aws_iam_role" "employee_role" {
   }
 }
 
-# IAM Policy for the Employee Directory App
+# IAM policy defining what the app can access
 resource "aws_iam_policy" "employee_directory_app_policy" {
   name        = "EmployeeDirectoryAppManagedPolicy"
   description = "IAM policy for the Employee Directory Application"
@@ -71,8 +71,8 @@ resource "aws_iam_role_policy_attachment" "employee_app_policy_attachment" {
   policy_arn = aws_iam_policy.employee_directory_app_policy.arn
 }
 
-# Data source to get the current AWS region
+# Fetch current AWS region dynamically
 data "aws_region" "current" {}
 
-# Data source to get the current AWS account ID
+# Fetch current AWS account ID dynamically
 data "aws_caller_identity" "current" {}

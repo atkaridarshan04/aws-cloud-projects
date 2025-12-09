@@ -22,6 +22,7 @@ mkdir -p /var/app
 
 # Get the app and extract it
 wget https://raw.githubusercontent.com/atkaridarshan04/aws-3tier-ha-app/main/app.zip
+# wget https://raw.githubusercontent.com/atkaridarshan04/aws-cloud-projects/main/3tier-ha-app/app.zip
 unzip app.zip -d /var/app/
 
 # Navigate into the application directory
