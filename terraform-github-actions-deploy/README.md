@@ -4,7 +4,7 @@ Complete CI/CD automation pipeline for AWS infrastructure deployment and applica
 
 ## 🏗️ Architecture Overview
 
-![Architecture Diagram](./assets/architecture.png)
+![Architecture Diagram](./assets/architecture_light.png)
 
 This project implements a modern DevOps automation pipeline with:
 - **Infrastructure as Code** using Terraform with remote state

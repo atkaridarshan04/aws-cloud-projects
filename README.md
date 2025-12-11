@@ -127,7 +127,7 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </td>
 <td width="60%" style="border: 2px solid #28A745; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
 
-<img src="./terraform-github-actions-deploy/assets/architecture.png" alt="GitHub Actions CI/CD Architecture" width="100%">
+<img src="./terraform-github-actions-deploy/assets/architecture_light.png" alt="GitHub Actions CI/CD Architecture" width="100%">
 
 </td>
 </tr>
@@ -150,7 +150,7 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </td>
 <td width="60%" style="border: 2px solid #D24939; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
 
-<img src="./ecs-cicd-pipeline/assets/ecs-cicd-architecture.png" alt="ECS CI/CD Architecture" width="100%">
+<img src="./ecs-cicd-pipeline/docs/assets/ecs_cicd_architecture_light.png" alt="ECS CI/CD Architecture" width="100%">
 
 </td>
 </tr>
