@@ -30,7 +30,6 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "artifacts" {
 }
 
 # Block all public access for security
-# Ensures artifacts remain private
 resource "aws_s3_bucket_public_access_block" "artifacts" {
   bucket = aws_s3_bucket.artifacts.id
 

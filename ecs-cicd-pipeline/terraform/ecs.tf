@@ -22,6 +22,7 @@ resource "aws_ecs_task_definition" "app" {
   cpu                      = var.cpu               # CPU units (256 = 0.25 vCPU)
   memory                   = var.memory            # Memory in MB
   execution_role_arn       = aws_iam_role.ecs_task_execution.arn
+  task_role_arn           = aws_iam_role.ecs_task_execution.arn
 
   # Container definition with ECR image reference
   container_definitions = jsonencode([

@@ -66,40 +66,44 @@ resource "aws_subnet" "private" {
   }
 }
 
-# Elastic IPs for NAT Gateways
-resource "aws_eip" "nat" {
-  count  = 2
-  domain = "vpc"
+# NAT Gateway Configuration (Commented out - using VPC Endpoints instead)
+# Uncomment if you need internet access for 3rd party APIs or external services
+# that don't have VPC endpoints available
 
-  tags = {
-    Name = "${var.project_name}-nat-eip-${count.index + 1}"
-  }
+# resource "aws_eip" "nat" {
+#   count  = 2
+#   domain = "vpc"
+#
+#   tags = {
+#     Name = "${var.project_name}-nat-eip-${count.index + 1}"
+#   }
+#
+#   depends_on = [aws_internet_gateway.main]
+# }
 
-  depends_on = [aws_internet_gateway.main]
-}
+# resource "aws_nat_gateway" "main" {
+#   count         = 2
+#   allocation_id = aws_eip.nat[count.index].id
+#   subnet_id     = aws_subnet.public[count.index].id
+#
+#   tags = {
+#     Name = "${var.project_name}-nat-gw-${count.index + 1}"
+#   }
+#
+#   depends_on = [aws_internet_gateway.main]
+# }
 
-# NAT Gateways for ECR access from private subnets
-resource "aws_nat_gateway" "main" {
-  count         = 2
-  allocation_id = aws_eip.nat[count.index].id
-  subnet_id     = aws_subnet.public[count.index].id
-
-  tags = {
-    Name = "${var.project_name}-nat-gw-${count.index + 1}"
-  }
-
-  depends_on = [aws_internet_gateway.main]
-}
-
-# Route tables for private subnets
+# Route tables for private subnets (no internet route - using VPC endpoints)
 resource "aws_route_table" "private" {
   count  = 2
   vpc_id = aws_vpc.main.id
 
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.main[count.index].id
-  }
+  # No default route - AWS services accessed via VPC endpoints
+  # Uncomment below and NAT Gateway resources if internet access needed
+  # route {
+  #   cidr_block     = "0.0.0.0/0"
+  #   nat_gateway_id = aws_nat_gateway.main[count.index].id
+  # }
 
   tags = {
     Name = "${var.project_name}-private-rt-${count.index + 1}"
@@ -146,7 +150,7 @@ resource "aws_security_group" "ecs" {
   name_prefix = "${var.project_name}-ecs-"
   vpc_id      = aws_vpc.main.id
 
-  # Only allow traffic from ALB on container port (This ensures ECS tasks are not directly accessible from internet)
+  # Only allow traffic from ALB on container port
   ingress {
     description     = "Traffic from ALB only"
     from_port       = var.alb_port
@@ -155,12 +159,12 @@ resource "aws_security_group" "ecs" {
     security_groups = [aws_security_group.alb.id]
   }
 
-  # Allow outbound traffic for ECR pulls and external API calls
+  # Allow outbound traffic for VPC endpoints and ECR access
   egress {
-    description = "Outbound for ECR pulls and external APIs"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    description = "Outbound HTTPS for ECR and VPC endpoints"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 

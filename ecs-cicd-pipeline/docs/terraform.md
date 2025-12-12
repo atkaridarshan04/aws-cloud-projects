@@ -1,33 +1,34 @@
-# 🚀 Deploying Using Terraform
+# 🚀 Terraform Deployment Guide
 
-## 📋 Deployment Steps
-
-### 1. **Navigate to the Terraform Directory**
+### **Step 1: Navigate to Terraform Directory**
 
 ```bash
 cd terraform
 ```
 
-### 2. **Set Required Variables**
+### **Step 2: Configure Variables**
 
-Create a `terraform.tfvars` file with your specific values:
+Create your configuration file:
 
 ```bash
 cp terraform.tfvars.example terraform.tfvars
 ```
 
-Edit the `terraform.tfvars` file and provide:
+Edit `terraform.tfvars` with your specific values:
 
 ```hcl
-# Required Variables
-github_repo = "https://github.com/your-username/your-repo"
-github_token = "your-github-personal-access-token"
+# AWS Configuration
+aws_region = "eu-north-1"
 
-# Optional Variables (defaults provided)
-aws_region = "us-east-1"
+# Project Configuration  
 project_name = "ecs-cicd-pipeline"
 ecr_repository_name = "container-orchestration-repo"
+
+# GitHub Configuration
+github_repo = "https://github.com/your-username/ecs-cicd-pipeline"
 github_branch = "main"
+
+# Container Configuration
 container_port = 5173
 alb_port = 80
 desired_count = 2
@@ -35,80 +36,162 @@ cpu = 256
 memory = 512
 ```
 
-> **Note:** Generate a GitHub Personal Access Token with `repo` permissions for CodePipeline integration.
+### **Step 3: Initialize Terraform**
 
-### 3. **Initialize Terraform**
-
-This command initializes the Terraform environment, downloads required providers, and sets up the backend.
+Initialize the working directory and download providers:
 
 ```bash
 terraform init
 ```
 
-### 4. **Plan Infrastructure**
+### **Step 4: Plan Infrastructure**
 
-Run the plan command to see what Terraform will create, modify, or destroy:
+Review the execution plan:
 
 ```bash
 terraform plan
 ```
 
-This helps verify that the setup will match your expectations before actually applying the changes.
+This shows exactly what resources will be created, modified, or destroyed.
 
-### 5. **Apply and Deploy**
+### **Step 5: Deploy Infrastructure**
 
-Deploy the infrastructure with the following command. This will create all the resources defined in your Terraform configuration:
+Apply the configuration:
 
 ```bash
 terraform apply --auto-approve
 ```
 
-<!-- ![tf-output](../assets/tf-output.png) -->
+**Expected Output:**
+![Terraform Outputs](./assets/tf_outputs.png)
 
-### 6. **Initial Image Push (First Time Only)**
+## 🔗 Post-Deployment Configuration
 
-For the first deployment, you need to push an initial image to ECR:
+### **Step 6: Approve GitHub Connection**
+
+1. Navigate to **AWS CodePipeline Console**
+2. Find your pipeline and click on the **Source** stage
+3. **Approve the GitHub connection** when prompted
+
+![GitHub Connection](./assets/gh-connection.png)
+
+4. **Retry the Source stage** to proceed with the pipeline
+
+### **Step 7: Verify Deployment**
+
+Access your application using the ALB DNS name from the Terraform output:
 
 ```bash
-# Get ECR login token
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.us-east-1.amazonaws.com
-
-# Build and tag your image
-docker build -t container-orchestration-repo .
-docker tag container-orchestration-repo:latest <account-id>.dkr.ecr.us-east-1.amazonaws.com/container-orchestration-repo:latest
-
-# Push to ECR
-docker push <account-id>.dkr.ecr.us-east-1.amazonaws.com/container-orchestration-repo:latest
+# Get the load balancer URL
+terraform output load_balancer_url
 ```
 
-### 7. **Accessing Your Application**
+## 📊 Resource Verification
 
-After deployment, wait for the ECS service to become healthy. Check the output for the **ALB DNS name**. Open this in your web browser to verify that the setup is working.
+### **CodePipeline Execution**
+Monitor your CI/CD pipeline:
 
-<!-- ![app-home](../assets/web-v1.png) -->
+![CodePipeline](./assets/tf_codepipeline.png)
+![Pipeline Execution](./assets/tf_codepipeline_execution.png)
 
-### 8. **Verify CI/CD Pipeline**
+### **CodeBuild Projects**
+View build configurations:
 
-1. **Push code changes** to your GitHub repository
-2. **Monitor CodePipeline** in AWS Console - it should automatically trigger
-3. **Check ECR** for new image versions
-4. **Verify ECS service** updates with new task definition
-5. **Test application** via ALB DNS to see changes
+![CodeBuild](./assets/tf_codebuild.png)
 
-<!-- ![pipeline-success](../assets/cp-6.png) -->
+### **ECR Repository**
+Check container images:
 
-## 📝 Outputs
+![ECR Repository](./assets/tf_ecr.png)
 
-Once the infrastructure is deployed, Terraform will output:
+### **ECS Service**
+Monitor running tasks:
 
-- **ALB DNS Name**: Access your application through the load balancer
-- **ECR Repository URL**: Docker image repository
-- **ECS Cluster Name**: Container cluster identifier
-- **CodePipeline Name**: CI/CD pipeline identifier
+![ECS Service](./assets/tf_ecs.png)
 
-## 🧹 Clean Up Resources
+### **VPC Endpoints**
+Verify private connectivity:
 
-To destroy all provisioned AWS resources:
+![VPC Endpoints](./assets/tf_endpoints.png)
+
+### **S3 Artifacts Bucket**
+Pipeline artifact storage:
+
+![S3 Bucket](./assets/tf_s3.png)
+
+## 🔄 CI/CD Pipeline Testing
+
+### **Trigger Pipeline**
+
+1. **Make code changes** to your application
+2. **Push to GitHub** repository
+3. **Monitor pipeline** execution in AWS Console
+4. **Verify deployment** via ALB DNS name
+
+### **Pipeline Stages**
+
+| Stage | Action | Duration |
+|-------|--------|----------|
+| **Source** | GitHub checkout | ~30 seconds |
+| **Build** | Docker build & ECR push | ~2-5 minutes |
+| **Deploy** | ECS service update | ~3-5 minutes |
+
+## 🛠️ Troubleshooting
+
+### **Common Issues**
+
+#### **GitHub Connection Failed**
+```bash
+# Check CodeStar connection status
+aws codestar-connections list-connections
+```
+
+#### **ECS Tasks Not Starting**
+```bash
+# Check ECS service events
+aws ecs describe-services \
+  --cluster $(terraform output -raw ecs_cluster_name) \
+  --services $(terraform output -raw ecs_service_name)
+```
+
+#### **ALB Health Check Failures**
+```bash
+# Check target group health
+aws elbv2 describe-target-health \
+  --target-group-arn <target-group-arn>
+```
+
+### **Debugging Commands**
+
+```bash
+# View Terraform state
+terraform show
+
+# Check specific resource
+terraform state show aws_ecs_service.app
+
+# View logs
+aws logs describe-log-groups --log-group-name-prefix /ecs/
+```
+
+## 🔐 Security Features
+
+- ✅ **Private Subnets**: ECS tasks isolated from internet
+- ✅ **VPC Endpoints**: Private AWS service access
+- ✅ **Security Groups**: Restrictive network rules
+- ✅ **IAM Roles**: Least privilege access
+- ✅ **ECR Scanning**: Container vulnerability detection
+
+## 📈 Monitoring & Observability
+
+- **CloudWatch Container Insights**: Enabled on ECS cluster
+- **ALB Access Logs**: Available in S3 (optional)
+- **VPC Flow Logs**: Network traffic monitoring (optional)
+- **CodePipeline Metrics**: Build and deployment tracking
+
+## 🧹 Cleanup
+
+To destroy all resources:
 
 ```bash
 terraform destroy --auto-approve

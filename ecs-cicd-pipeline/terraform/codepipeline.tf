@@ -1,3 +1,13 @@
+# CodeStar Connection for GitHub
+resource "aws_codestarconnections_connection" "github" {
+  name          = "${var.project_name}-github"
+  provider_type = "GitHub"
+
+  tags = {
+    Name = "${var.project_name}-github"
+  }
+}
+
 # CodePipeline - CI/CD Orchestration
 resource "aws_codepipeline" "app" {
   name     = "${var.project_name}-pipeline"
@@ -17,17 +27,15 @@ resource "aws_codepipeline" "app" {
     action {
       name             = "Source"
       category         = "Source"
-      owner            = "ThirdParty"       # GitHub is third-party provider
-      provider         = "GitHub"
+      owner            = "AWS"
+      provider         = "CodeStarSourceConnection"
       version          = "1"
-      output_artifacts = ["source_output"]  # Source code artifact for next stage
+      output_artifacts = ["source_output"]
 
-      # GitHub repository configuration
       configuration = {
-        Owner      = split("/", replace(var.github_repo, "https://github.com/", ""))[0]  # GitHub username/org
-        Repo       = split("/", replace(var.github_repo, "https://github.com/", ""))[1]  # Repository name
-        Branch     = var.github_branch   # Branch to monitor (default: main)
-        OAuthToken = var.github_token    # Personal access token for authentication
+        ConnectionArn    = aws_codestarconnections_connection.github.arn
+        FullRepositoryId = replace(var.github_repo, "https://github.com/", "")
+        BranchName       = var.github_branch
       }
     }
   }
@@ -71,6 +79,8 @@ resource "aws_codepipeline" "app" {
         ServiceName = aws_ecs_service.app.name     # Target ECS service
         FileName    = "imagedefinitions.json"      # Image definition file from CodeBuild
       }
+      
+      role_arn = aws_iam_role.codepipeline.arn
     }
   }
 

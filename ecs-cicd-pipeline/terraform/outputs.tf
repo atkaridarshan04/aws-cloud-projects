@@ -32,3 +32,17 @@ output "s3_artifacts_bucket" {
   description = "S3 artifacts bucket name"
   value       = aws_s3_bucket.artifacts.bucket
 }
+output "codestar_connection_arn" {
+  description = "CodeStar Connection ARN for GitHub"
+  value       = aws_codestarconnections_connection.github.arn
+}
+# VPC Endpoints outputs
+output "vpc_endpoints" {
+  description = "VPC Endpoints for AWS services"
+  value = {
+    ecr_api = aws_vpc_endpoint.ecr_api.id
+    ecr_dkr = aws_vpc_endpoint.ecr_dkr.id
+    s3      = aws_vpc_endpoint.s3.id
+    logs    = aws_vpc_endpoint.logs.id
+  }
+}

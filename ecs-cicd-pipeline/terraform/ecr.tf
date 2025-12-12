@@ -2,6 +2,7 @@
 resource "aws_ecr_repository" "app" {
   name                 = var.ecr_repository_name
   image_tag_mutability = "MUTABLE"  # Allow overwriting tags (useful for 'latest')
+  force_delete         = true
 
   # Security: Scan images for vulnerabilities on push
   image_scanning_configuration {

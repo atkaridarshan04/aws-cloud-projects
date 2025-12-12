@@ -31,7 +31,6 @@ This repository contains **AWS cloud projects** demonstrating various services a
 - Auto Scaling Groups
 - Private subnets with NAT Gateway
 - DynamoDB & S3 integration
-- CloudWatch monitoring
 
 </td>
 <td width="60%" style="border: 2px solid #FF9900; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
@@ -88,6 +87,27 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </tr>
 </table>
 
+### 🚀 **ECS CI/CD Pipeline**
+
+<table border="1" cellpadding="15" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 2px solid #D24939;">
+<tr>
+<td width="30%" style="border: 2px solid #D24939; padding: 20px; vertical-align: top;">
+
+**[ecs-cicd-pipeline](./ecs-cicd-pipeline/)**  
+*Automated container deployment with ECS and CodePipeline*
+- AWS CodePipeline automation
+- ECS container orchestration
+- Automated testing & deployment
+
+</td>
+<td width="60%" style="border: 2px solid #D24939; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
+
+<img src="./ecs-cicd-pipeline/docs/assets/ecs_cicd_architecture_light.png" alt="ECS CI/CD Architecture" width="100%">
+
+</td>
+</tr>
+</table>
+
 ### ☸️ **EKS Fargate Deployment**
 
 <table border="1" cellpadding="15" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 2px solid #326CE5;">
@@ -99,8 +119,6 @@ This repository contains **AWS cloud projects** demonstrating various services a
 - EKS Fargate serverless compute
 - Application Load Balancer
 - Kubernetes deployments
-- Service mesh integration
-- Container orchestration
 
 </td>
 <td width="60%" style="border: 2px solid #326CE5; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
@@ -133,28 +151,6 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </tr>
 </table>
 
-### 🚀 **ECS CI/CD Pipeline**
-
-<table border="1" cellpadding="15" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 2px solid #D24939;">
-<tr>
-<td width="30%" style="border: 2px solid #D24939; padding: 20px; vertical-align: top;">
-
-**[ecs-cicd-pipeline](./ecs-cicd-pipeline/)**  
-*Automated container deployment with ECS and CodePipeline*
-- AWS CodePipeline automation
-- ECS container orchestration
-- ECR container registry
-- Blue/Green deployments
-- Automated testing & deployment
-
-</td>
-<td width="60%" style="border: 2px solid #D24939; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
-
-<img src="./ecs-cicd-pipeline/docs/assets/ecs_cicd_architecture_light.png" alt="ECS CI/CD Architecture" width="100%">
-
-</td>
-</tr>
-</table>
 
 ### 🏛️ **Terraform Remote Backend**
 
@@ -168,7 +164,6 @@ This repository contains **AWS cloud projects** demonstrating various services a
 - DynamoDB state locking
 - Encryption at rest
 - Version control integration
-- Multi-environment support
 
 </td>
 <td width="60%" style="border: 2px solid #7B42BC; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">

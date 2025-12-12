@@ -123,7 +123,9 @@ resource "aws_iam_role_policy" "codepipeline" {
           "ecs:DescribeTasks",           # Monitor task status
           "ecs:ListTasks",               # List running tasks
           "ecs:RegisterTaskDefinition",  # Create new task definition
-          "ecs:UpdateService"            # Deploy new version
+          "ecs:UpdateService",           # Deploy new version
+          "ecs:DescribeClusters",        # Access cluster information
+          "ecs:TagResource"              # Tag resources during deployment
         ]
         Resource = "*"
       },
@@ -131,6 +133,22 @@ resource "aws_iam_role_policy" "codepipeline" {
         # IAM permission to pass execution role to ECS tasks
         Effect = "Allow"
         Action = "iam:PassRole"
+        Resource = aws_iam_role.ecs_task_execution.arn
+        Condition = {
+          StringEquals = {
+            "iam:PassedToService" = [
+              "ecs.amazonaws.com",
+              "ecs-tasks.amazonaws.com"
+            ]
+          }
+        }
+      },
+      {
+        # CodeStar Connections permissions for GitHub integration
+        Effect = "Allow"
+        Action = [
+          "codestar-connections:UseConnection"
+        ]
         Resource = "*"
       }
     ]
@@ -158,7 +176,6 @@ resource "aws_iam_role" "ecs_task_execution" {
 }
 
 # Attach AWS managed policy for ECS task execution
-# Provides standard permissions for ECR pulls and CloudWatch logging
 resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
   role       = aws_iam_role.ecs_task_execution.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"

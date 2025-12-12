@@ -1,14 +1,13 @@
 # AWS Configuration
-aws_region = "us-east-1"
+aws_region = "eu-north-1"
 
 # Project Configuration
 project_name = "ecs-cicd-pipeline"
 ecr_repository_name = "container-orchestration-repo"
 
 # GitHub Configuration
-github_repo = "https://github.com/your-username/your-repo"
+github_repo = "https://github.com/atkaridarshan04/ecs-cicd-pipeline"
 github_branch = "main"
-github_token = "your-github-personal-access-token"
 
 # Container Configuration
 container_port = 5173
