@@ -1,6 +1,6 @@
 # SSH key pair used for connecting to EC2 instances
 resource "aws_key_pair" "key-pair" {
-  key_name   = "${var.name}-ssh-key"
+  key_name = "${var.name}-ssh-key"
 
   # Public SSH key (private key stays on your machine)
   public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG4yOuAYryxGtqUh8h+A7iyMbHozuE7qSS0d5mmD7Kvi da_wsl@DA-PC"
@@ -63,12 +63,12 @@ resource "aws_launch_template" "launch_template" {
   disable_api_stop        = true
   disable_api_termination = true
 
-  ebs_optimized = true    # Enable EBS optimization for performance
+  ebs_optimized = true # Enable EBS optimization for performance
 
   image_id      = var.ami_id
   instance_type = var.instance_type
 
-  key_name = aws_key_pair.key-pair.key_name   # SSH key for access
+  key_name = aws_key_pair.key-pair.key_name # SSH key for access
 
   vpc_security_group_ids = [aws_security_group.ec2_sg.id] # Attach EC2 Security Group
 
@@ -95,7 +95,7 @@ resource "aws_launch_template" "launch_template" {
 
   # Attach IAM role permissions to EC2 instances
   iam_instance_profile {
-      name = aws_iam_instance_profile.employee_instance_profile.name
+    name = aws_iam_instance_profile.employee_instance_profile.name
   }
 
   # Root volume configuration
@@ -103,7 +103,7 @@ resource "aws_launch_template" "launch_template" {
     device_name = "/dev/xvda"
 
     ebs {
-      volume_size = 10
+      volume_size = 10 # 10 GiB (gigabytes)
     }
   }
 

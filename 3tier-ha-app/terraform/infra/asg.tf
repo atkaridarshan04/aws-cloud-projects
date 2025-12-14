@@ -1,15 +1,15 @@
 # Auto Scaling Group
 resource "aws_autoscaling_group" "asg" {
   name_prefix      = "${var.name}-asg"
-  desired_capacity = 2    # Desired number of running EC2 instances
-  max_size         = 3    #  Upper scaling bounds
-  min_size         = 1    #  Lower scaling bounds
+  desired_capacity = 2 # Desired number of running EC2 instances
+  max_size         = 3 #  Upper scaling bounds
+  min_size         = 1 #  Lower scaling bounds
 
   # Place instances only in private subnets (no public access)
   vpc_zone_identifier = module.vpc.private_subnets
 
   # Use Load Balancer health checks instead of EC2-only checks
-  health_check_type         = "ELB"
+  health_check_type = "ELB"
 
   # Time (seconds) to wait before checking instance health
   health_check_grace_period = 300
@@ -45,10 +45,10 @@ resource "aws_autoscaling_group" "asg" {
 
   # Explicit dependencies to ensure backend services exist first
   depends_on = [
-  aws_s3_bucket.employee_photos_bucket,
-  aws_dynamodb_table.employee_directory,
-  module.vpc,
-  # aws_instance.bastion-host # Uncomment if you have this resource defined and truly need this explicit dependency
+    aws_s3_bucket.employee_photos_bucket,
+    aws_dynamodb_table.employee_directory,
+    module.vpc,
+    # aws_instance.bastion-host # Uncomment if you have this resource defined and truly need this explicit dependency
   ]
 }
 
@@ -65,8 +65,8 @@ resource "aws_autoscaling_policy" "cpu_target_tracking" {
     predefined_metric_specification {
       predefined_metric_type = "ASGAverageCPUUtilization"
     }
-    target_value     = 60       # Maintain average CPU around 60%
-    disable_scale_in = false    # Allow scale-in when usage drops
+    target_value     = 60    # Maintain average CPU around 60%
+    disable_scale_in = false # Allow scale-in when usage drops
   }
 }
 

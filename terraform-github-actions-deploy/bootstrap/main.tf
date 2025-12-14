@@ -4,9 +4,9 @@
 
 # This resource registers GitHub Actions as a trusted OIDC identity provider in AWS.
 resource "aws_iam_openid_connect_provider" "github" {
-  url             = "https://token.actions.githubusercontent.com"   # Official GitHub Actions OIDC token issuer
-  client_id_list  = ["sts.amazonaws.com"]                           # AWS STS is the intended audience for the token
-  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]    # GitHub's SSL certificate thumbprint
+  url             = "https://token.actions.githubusercontent.com" # Official GitHub Actions OIDC token issuer
+  client_id_list  = ["sts.amazonaws.com"]                         # AWS STS is the intended audience for the token
+  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]  # GitHub's SSL certificate thumbprint
 }
 
 #######################################
@@ -30,14 +30,14 @@ data "aws_iam_policy_document" "oidc_assume_role" {
     # Restrict role usage to a specific GitHub organization/repository
     condition {
       test     = "StringLike"
-      variable = "token.actions.githubusercontent.com:sub"
+      variable = "token.actions.githubusercontent.com:sub" # Subject claim in the OIDC token
       values   = ["repo:${local.github_org}/${local.github_repo}:*"]
     }
 
     # Ensure tokens are meant for AWS STS only
     condition {
       test     = "StringEquals"
-      variable = "token.actions.githubusercontent.com:aud"
+      variable = "token.actions.githubusercontent.com:aud" # Audience claim in the OIDC token
       values   = ["sts.amazonaws.com"]
     }
   }
@@ -107,9 +107,9 @@ resource "aws_s3_bucket_public_access_block" "terraform_state" {
 
 # DynamoDB table used by Terraform for state locking
 resource "aws_dynamodb_table" "terraform_locks" {
-  name           = "terraform-github-actions-deploy-locks"
-  billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "LockID"
+  name         = "terraform-github-actions-deploy-locks"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
 
   attribute {
     name = "LockID"

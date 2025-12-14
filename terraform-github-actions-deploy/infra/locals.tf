@@ -2,8 +2,8 @@ locals {
   project_name = "terraform-github-actions-deploy"
 
   # Backend configuration
-  s3_bucket_name    = "terraform-github-actions-deploy-state-bucket"
-  dynamodb_table    = "terraform-github-actions-deploy-locks"
+  s3_bucket_name = "terraform-github-actions-deploy-state-bucket"
+  dynamodb_table = "terraform-github-actions-deploy-locks"
 
   # Networking
   vpc_cidr    = "10.0.0.0/16"

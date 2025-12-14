@@ -46,12 +46,12 @@ resource "aws_lb_target_group" "lb_tg" {
 
   # Health check configuration
   health_check {
-    path                = "/"       # Endpoint to check
-    interval            = 30        # Check every 30 seconds
-    timeout             = 5         # Fail if no response in 5 seconds
-    healthy_threshold   = 2         # 2 successes = healthy
-    unhealthy_threshold = 2         # 2 failures = unhealthy   
-    protocol            = "HTTP"   
+    path                = "/" # Endpoint to check
+    interval            = 30  # Check every 30 seconds
+    timeout             = 5   # Fail if no response in 5 seconds
+    healthy_threshold   = 2   # 2 successes = healthy
+    unhealthy_threshold = 2   # 2 failures = unhealthy   
+    protocol            = "HTTP"
   }
 
   tags = {
@@ -66,10 +66,10 @@ resource "aws_lb" "alb" {
   load_balancer_type = "application"
 
   # Attach ALB security group
-  security_groups    = [aws_security_group.lb_sg.id]
+  security_groups = [aws_security_group.lb_sg.id]
 
   # ALB placed in multiple public subnets (multi-AZ)
-  subnets            = module.vpc.public_subnets
+  subnets = module.vpc.public_subnets
 
   # Optional safety mechanism to prevent accidental deletion
   # enable_deletion_protection = true

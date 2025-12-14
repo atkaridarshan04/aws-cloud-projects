@@ -16,9 +16,8 @@ terraform plan
 terraform apply
 ```
 
-![Terraform Apply](../images/tf-apply.png)
+![Terraform Apply](./images/tf-apply.png)
 
----
 
 ## ✅ Post Deployment Steps
 
@@ -26,7 +25,7 @@ terraform apply
 
 After deployment, copy the **API Gateway URL** from Terraform output and replace the value of `api_url` in your `index.html`.
 
-![Edit index.html](../images/tf-html.png)
+![Edit index.html](./images/tf-html.png)
 
 ---
 
@@ -39,18 +38,16 @@ sh upload.sh
 ```
 
 > Example:
-![S3 Upload](../images/tf-s3.png)
+![S3 Upload](./images/tf-s3.png)
 
----
 
 ### 🌐 3. Access the Web App
 
 Grab the **CloudFront CDN domain** from the Terraform output and open it in your browser.
 
 > Example:
-![Web Access via CDN](../images/tf-web.png)
+![Web Access via CDN](./images/tf-web.png)
 
----
 
 ## 🔥 Clean Up Resources
 

@@ -4,7 +4,7 @@
 
 # DynamoDB table to store short URL mappings
 resource "aws_dynamodb_table" "short_urls" {
-  name = var.dynamodb_table_name  # Table name from variables
+  name = var.dynamodb_table_name # Table name from variables
 
   # On-demand billing:
   # - No capacity planning

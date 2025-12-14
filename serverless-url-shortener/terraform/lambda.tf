@@ -3,7 +3,7 @@
 ########################################
 
 resource "aws_lambda_function" "create_short_url" {
-  filename = "lambda/create.zip"      # Packaged Lambda code
+  filename      = "lambda/create.zip" # Packaged Lambda code
   function_name = "CreateShortURL"    # Logical name of the Lambda function in AWS
 
   role = aws_iam_role.lambda_exec.arn # IAM role defining what this Lambda can access
@@ -13,7 +13,7 @@ resource "aws_lambda_function" "create_short_url" {
   # function: lambda_handler
   handler = "create.lambda_handler"
 
-  runtime = "python3.11"    # Runtime environment
+  runtime = "python3.11" # Runtime environment
 
   # Ensures Terraform updates Lambda only if code changes
   source_code_hash = filebase64sha256("lambda/create.zip")
@@ -67,8 +67,8 @@ resource "aws_lambda_permission" "apigw_permission_create" {
   statement_id = "AllowAPIGatewayInvoke"
   action       = "lambda:InvokeFunction"
 
-  function_name = aws_lambda_function.create_short_url.function_name    # Lambda being invoked
-  principal = "apigateway.amazonaws.com"                                # Service allowed to invoke Lambda
+  function_name = aws_lambda_function.create_short_url.function_name # Lambda being invoked
+  principal     = "apigateway.amazonaws.com"                         # Service allowed to invoke Lambda
 
   source_arn = "${aws_apigatewayv2_api.url_shortener_api.execution_arn}/*/*" # Restrict invocation to this specific API Gateway
 }

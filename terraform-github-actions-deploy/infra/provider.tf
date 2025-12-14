@@ -6,7 +6,7 @@ terraform {
     region         = "eu-north-1"
     dynamodb_table = "your-terraform-locks-table"
   }
-  
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"

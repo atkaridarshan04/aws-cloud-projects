@@ -17,19 +17,19 @@ resource "aws_ecs_cluster" "main" {
 # Defines container specifications and resource requirements
 resource "aws_ecs_task_definition" "app" {
   family                   = "${var.project_name}-task"
-  network_mode             = "awsvpc"              # Required for Fargate
-  requires_compatibilities = ["FARGATE"]           # Serverless container platform
-  cpu                      = var.cpu               # CPU units (256 = 0.25 vCPU)
-  memory                   = var.memory            # Memory in MB
+  network_mode             = "awsvpc"    # Required for Fargate
+  requires_compatibilities = ["FARGATE"] # Serverless container platform
+  cpu                      = var.cpu     # CPU units (256 = 0.25 vCPU)
+  memory                   = var.memory  # Memory in MB
   execution_role_arn       = aws_iam_role.ecs_task_execution.arn
-  task_role_arn           = aws_iam_role.ecs_task_execution.arn
+  task_role_arn            = aws_iam_role.ecs_task_execution.arn
 
   # Container definition with ECR image reference
   container_definitions = jsonencode([
     {
       name  = "app-container"
       image = "${aws_ecr_repository.app.repository_url}:latest"
-      
+
       # Port mapping for ALB target group
       portMappings = [
         {
@@ -48,7 +48,7 @@ resource "aws_ecs_task_definition" "app" {
         }
       }
 
-      essential = true  # Container failure causes task to stop
+      essential = true # Container failure causes task to stop
     }
   ])
 
@@ -69,8 +69,8 @@ resource "aws_ecs_service" "app" {
   # Network configuration for Fargate tasks
   network_configuration {
     security_groups  = [aws_security_group.ecs.id]
-    subnets          = aws_subnet.private[*].id    # Private subnets for security
-    assign_public_ip = false                       # No direct internet access
+    subnets          = aws_subnet.private[*].id # Private subnets for security
+    assign_public_ip = false                    # No direct internet access
   }
 
   # Load balancer integration for traffic distribution
@@ -91,7 +91,7 @@ resource "aws_ecs_service" "app" {
 # CloudWatch Log Group for container logs
 resource "aws_cloudwatch_log_group" "app" {
   name              = "/ecs/${var.project_name}"
-  retention_in_days = 7  # Cost optimization - adjust as needed
+  retention_in_days = 7 # Cost optimization - adjust as needed
 
   tags = {
     Name = "${var.project_name}-logs"

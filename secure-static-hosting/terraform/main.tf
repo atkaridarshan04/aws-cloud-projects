@@ -1,8 +1,8 @@
 ### --- S3 Bucket Setup --- ###
 
 resource "aws_s3_bucket" "website_bucket" {
-  bucket = var.bucket_name
-  force_destroy = true      # delete the bucket even if it contains objects.
+  bucket        = var.bucket_name
+  force_destroy = true # delete the bucket even if it contains objects.
 }
 
 # Ensure bucket owner has ownership of uploaded objects to avoid access issues
@@ -28,11 +28,11 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
 
   policy = jsonencode({
     Version = "2008-10-17",
-    Id = "PolicyForCloudFrontPrivateContent",
+    Id      = "PolicyForCloudFrontPrivateContent",
     Statement = [
       {
-        Sid       = "AllowCloudFrontServicePrincipal",
-        Effect    = "Allow",
+        Sid    = "AllowCloudFrontServicePrincipal",
+        Effect = "Allow",
         Principal = {
           Service = "cloudfront.amazonaws.com"
         },
@@ -51,11 +51,11 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
 
 ### --- CloudFront Distribution Setup --- ###
 resource "aws_cloudfront_origin_access_control" "oac" {
-  name = "S3-OAC"
-  description = "Access control for private S3 bucket"
+  name                              = "S3-OAC"
+  description                       = "Access control for private S3 bucket"
   origin_access_control_origin_type = "s3"
-  signing_behavior = "always"
-  signing_protocol = "sigv4"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
 }
 
 resource "aws_cloudfront_distribution" "cdn" {

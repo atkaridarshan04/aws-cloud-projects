@@ -9,9 +9,10 @@ on:
   #     - main
   workflow_dispatch:
 
+# Permissions required for GitHub OIDC authentication
 permissions:
-  id-token: write
-  contents: read
+  id-token: write   # Required to request OIDC token
+  contents: read    # Required to checkout repository
 
 env:
   AWS_REGION: eu-north-1
@@ -29,13 +30,15 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.9.5
-
+      
+      # Authenticate to AWS using GitHub OIDC
       - name: Configure AWS Credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-oidc-role
           aws-region: ${{ env.AWS_REGION }}
 
+      # Initialize Terraform and configure remote backend
       - name: Initialize Terraform
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: |

@@ -193,13 +193,13 @@ resource "aws_ecr_lifecycle_policy" "app" {
 }
 
 #######################################
-# 9️⃣ IAM role for EC2 (ECR pull + SSM)
+# 9️⃣ IAM role for EC2
 #######################################
 
 # IAM policy that allows ECR read and getting auth token (narrow set)
 data "aws_iam_policy_document" "ec2_ecr_policy" {
   statement {
-    sid     = "AllowECRAuthAndPull"
+    sid = "AllowECRAuthAndPull"
     actions = [
       "ecr:GetAuthorizationToken",
       "ecr:BatchCheckLayerAvailability",
@@ -235,14 +235,14 @@ resource "aws_iam_role_policy" "ec2_ecr_policy_attach" {
   policy = data.aws_iam_policy_document.ec2_ecr_policy.json
 }
 
-# Attach AWS-managed policy for SSM
-resource "aws_iam_role_policy_attachment" "ec2_ssm" {
-  role       = aws_iam_role.ec2_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
-
 # Instance profile so EC2 can get the role
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "${local.project_name}-instance-profile"
   role = aws_iam_role.ec2_role.name
 }
+
+# Attach AWS-managed policy for SSM
+# resource "aws_iam_role_policy_attachment" "ec2_ssm" {
+#   role       = aws_iam_role.ec2_role.name
+#   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+# }

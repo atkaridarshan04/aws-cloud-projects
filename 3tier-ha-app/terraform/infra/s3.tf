@@ -4,7 +4,7 @@ resource "aws_s3_bucket" "employee_photos_bucket" {
   bucket = "${var.name}-employee-photos-bucket-12345-abc"
 
   tags = {
-    Name = "${var.name}-EmployeePhotoBucket" 
+    Name = "${var.name}-EmployeePhotoBucket"
   }
 }
 
@@ -26,7 +26,7 @@ resource "aws_s3_bucket_policy" "employee_photos_bucket_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Sid = "AllowS3ReadAccess",
+        Sid    = "AllowS3ReadAccess",
         Effect = "Allow",
         Principal = {
           AWS = aws_iam_role.employee_role.arn # Dynamically reference the IAM Role ARN

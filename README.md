@@ -58,7 +58,7 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </td>
 <td width="60%" style="border: 2px solid #FF6B35; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
 
-<img src="./serverless-url-shortener/images/url-shortener-architecture.png" alt="Serverless Architecture" width="100%">
+<img src="./serverless-url-shortener/docs/images/serverless-url-shorterner-architecture-light.png" alt="Serverless Architecture" width="100%">
 
 </td>
 </tr>
@@ -108,27 +108,6 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </tr>
 </table>
 
-### ☸️ **EKS Fargate Deployment**
-
-<table border="1" cellpadding="15" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 2px solid #326CE5;">
-<tr>
-<td width="30%" style="border: 2px solid #326CE5; padding: 20px; vertical-align: top;">
-
-**[eks-fargate-deployment](./eks-fargate-deployment/)**  
-*Serverless Kubernetes with EKS Fargate and Application Load Balancer*
-- EKS Fargate serverless compute
-- Application Load Balancer
-- Kubernetes deployments
-
-</td>
-<td width="60%" style="border: 2px solid #326CE5; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
-
-<img src="./eks-fargate-deployment/images/eks-farget-alb-architecture.png" alt="EKS Fargate Architecture" width="100%">
-
-</td>
-</tr>
-</table>
-
 ### 🤖 **Terraform GitHub Actions Deploy**
 
 <table border="1" cellpadding="15" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 2px solid #28A745;">
@@ -145,12 +124,32 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </td>
 <td width="60%" style="border: 2px solid #28A745; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
 
-<img src="./terraform-github-actions-deploy/assets/architecture_light.png" alt="GitHub Actions CI/CD Architecture" width="100%">
+<img src="./terraform-github-actions-deploy/assets/tgad_architecture_light.png" alt="GitHub Actions CI/CD Architecture" width="100%">
 
 </td>
 </tr>
 </table>
 
+### ☸️ **EKS Fargate Deployment**
+
+<table border="1" cellpadding="15" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 2px solid #326CE5;">
+<tr>
+<td width="30%" style="border: 2px solid #326CE5; padding: 20px; vertical-align: top;">
+
+**[eks-fargate-deployment](./eks-fargate-deployment/)**  
+*Serverless Kubernetes with EKS Fargate and Application Load Balancer*
+- EKS Fargate serverless compute
+- Application Load Balancer
+- Kubernetes deployments
+
+</td>
+<td width="60%" style="border: 2px solid #326CE5; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
+
+<img src="./eks-fargate-deployment/images/eks-farget-alb-architecture-dark.png" alt="EKS Fargate Architecture" width="100%">
+
+</td>
+</tr>
+</table>
 
 ### 🏛️ **Terraform Remote Backend**
 
@@ -183,7 +182,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <div align="center">
 
 **⭐ Star this repository if you find it helpful!**
-
 <!-- *Built with ❤️ for the AWS community* -->
-
 </div>

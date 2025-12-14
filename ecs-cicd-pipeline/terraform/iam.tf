@@ -39,14 +39,14 @@ resource "aws_iam_role_policy" "codebuild" {
         # ECR permissions for Docker image operations
         Effect = "Allow"
         Action = [
-          "ecr:BatchCheckLayerAvailability",  # Check if image layers exist
-          "ecr:GetDownloadUrlForLayer",       # Download base image layers
-          "ecr:BatchGetImage",                # Pull base images
-          "ecr:GetAuthorizationToken",        # Authenticate with ECR
-          "ecr:PutImage",                     # Push built images
-          "ecr:InitiateLayerUpload",          # Start image layer upload
-          "ecr:UploadLayerPart",              # Upload image layer parts
-          "ecr:CompleteLayerUpload"           # Complete image layer upload
+          "ecr:BatchCheckLayerAvailability", # Check if image layers exist
+          "ecr:GetDownloadUrlForLayer",      # Download base image layers
+          "ecr:BatchGetImage",               # Pull base images
+          "ecr:GetAuthorizationToken",       # Authenticate with ECR
+          "ecr:PutImage",                    # Push built images
+          "ecr:InitiateLayerUpload",         # Start image layer upload
+          "ecr:UploadLayerPart",             # Upload image layer parts
+          "ecr:CompleteLayerUpload"          # Complete image layer upload
         ]
         Resource = "*"
       },
@@ -54,9 +54,9 @@ resource "aws_iam_role_policy" "codebuild" {
         # S3 permissions for build artifacts
         Effect = "Allow"
         Action = [
-          "s3:GetObject",      # Download source code
+          "s3:GetObject", # Download source code
           "s3:GetObjectVersion",
-          "s3:PutObject"       # Store build artifacts
+          "s3:PutObject" # Store build artifacts
         ]
         Resource = "${aws_s3_bucket.artifacts.arn}/*"
       }
@@ -109,8 +109,8 @@ resource "aws_iam_role_policy" "codepipeline" {
         # CodeBuild permissions to trigger builds
         Effect = "Allow"
         Action = [
-          "codebuild:BatchGetBuilds",  # Monitor build status
-          "codebuild:StartBuild"       # Trigger new builds
+          "codebuild:BatchGetBuilds", # Monitor build status
+          "codebuild:StartBuild"      # Trigger new builds
         ]
         Resource = "*"
       },
@@ -118,21 +118,21 @@ resource "aws_iam_role_policy" "codepipeline" {
         # ECS permissions for deployment actions
         Effect = "Allow"
         Action = [
-          "ecs:DescribeServices",        # Check service status
-          "ecs:DescribeTaskDefinition",  # Get current task definition
-          "ecs:DescribeTasks",           # Monitor task status
-          "ecs:ListTasks",               # List running tasks
-          "ecs:RegisterTaskDefinition",  # Create new task definition
-          "ecs:UpdateService",           # Deploy new version
-          "ecs:DescribeClusters",        # Access cluster information
-          "ecs:TagResource"              # Tag resources during deployment
+          "ecs:DescribeServices",       # Check service status
+          "ecs:DescribeTaskDefinition", # Get current task definition
+          "ecs:DescribeTasks",          # Monitor task status
+          "ecs:ListTasks",              # List running tasks
+          "ecs:RegisterTaskDefinition", # Create new task definition
+          "ecs:UpdateService",          # Deploy new version
+          "ecs:DescribeClusters",       # Access cluster information
+          "ecs:TagResource"             # Tag resources during deployment
         ]
         Resource = "*"
       },
       {
         # IAM permission to pass execution role to ECS tasks
-        Effect = "Allow"
-        Action = "iam:PassRole"
+        Effect   = "Allow"
+        Action   = "iam:PassRole"
         Resource = aws_iam_role.ecs_task_execution.arn
         Condition = {
           StringEquals = {
