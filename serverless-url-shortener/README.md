@@ -26,11 +26,11 @@ This project builds a serverless URL shortener using AWS services. Instead of us
 - **AWS CloudWatch** – Monitors API Gateway logs.
 
 ## Application Overview
-![final-1](./images/final-1.png)
+![final-1](./docs/images/final-1.png)
 
-![final-2](./images/final-2.png)
+![final-2](./docs/images/final-2.png)
 
-![final-3](./images/final-3.png)
+![final-3](./docs/images/final-3.png)
 
 ## Start Here
 
@@ -39,6 +39,4 @@ Pick one of the deployment guides:
 * **[Deploy with AWS Console](./docs/console.md)**
 * **[Deploy with Terraform](./docs/terraform.md)**
 
-
-## Conclusion
-This project provides a comprehensive and practical example of a serverless, event-driven application built on the AWS cloud. By leveraging fully managed services like AWS Lambda, API Gateway, DynamoDB, and S3, the solution demonstrates how to create a highly scalable and cost-effective system without the operational overhead of managing traditional servers. The inclusion of CloudWatch for monitoring and the provision of two distinct deployment methods (via the AWS Console for learning and Terraform for automation) make this project a robust and educational reference for anyone looking to understand and implement a modern, serverless architecture
+---
