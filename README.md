@@ -151,28 +151,6 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </tr>
 </table>
 
-### 🏛️ **Terraform Remote Backend**
-
-<table border="1" cellpadding="15" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 2px solid #7B42BC;">
-<tr>
-<td width="30%" style="border: 2px solid #7B42BC; padding: 20px; vertical-align: top;">
-
-**[terraform-remote-backend](./terraform-remote-backend/)**  
-*Secure Terraform state management with S3 and DynamoDB*
-- S3 backend configuration
-- DynamoDB state locking
-- Encryption at rest
-- Version control integration
-
-</td>
-<td width="60%" style="border: 2px solid #7B42BC; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
-
-<img src="./terraform-remote-backend/assets/architecture.png" alt="Terraform Backend Architecture" width="100%">
-
-</td>
-</tr>
-</table>
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
