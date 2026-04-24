@@ -169,7 +169,31 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </td>
 <td width="60%" style="border: 2px solid #E8A838; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
 
-<img src="./event-driven-order-pipeline/docs/images/architecture/order-pipeline-architecture-dark.png" alt="Event-Driven Order Pipeline Architecture" width="100%">
+<img src="./event-driven-order-pipeline/docs/images/architecture/order-pipeline-architecture-light.png" alt="Event-Driven Order Pipeline Architecture" width="100%">
+
+</td>
+</tr>
+</table>
+
+### 🔐 **Serverless Auth + Multi-Tenant API**
+
+<table border="1" cellpadding="15" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 2px solid #7B42BC;">
+<tr>
+<td width="30%" style="border: 2px solid #7B42BC; padding: 20px; vertical-align: top;">
+
+**[serverless-auth-api](./serverless-auth-api/)**  
+*JWT-based authentication and tenant-isolated data access using Cognito, API Gateway, Lambda, and DynamoDB*
+- Cognito User Pool — managed auth, JWT issuance
+- API Gateway HTTP API native JWT authorizer
+- Multi-tenant pool model with DynamoDB
+- Tenant isolation enforced at data layer
+- Least-privilege IAM per Lambda
+- CloudWatch logging
+
+</td>
+<td width="60%" style="border: 2px solid #7B42BC; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
+
+<img src="./serverless-auth-api/docs/images/architecture/serverless-auth-api-dark.png" alt="Serverless Auth API Architecture" width="100%">
 
 </td>
 </tr>
