@@ -151,6 +151,30 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </tr>
 </table>
 
+### 📦 **Event-Driven Order Processing Pipeline**
+
+<table border="1" cellpadding="15" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 2px solid #E8A838;">
+<tr>
+<td width="30%" style="border: 2px solid #E8A838; padding: 20px; vertical-align: top;">
+
+**[event-driven-order-pipeline](./event-driven-order-pipeline/)**  
+*Decoupled, resilient order processing system using SNS fan-out, SQS buffering, and DLQ retry logic*
+- SNS → SQS fan-out pattern
+- Dead Letter Queues (DLQ) & retry logic
+- Lambda consumer per concern (DB, email, analytics)
+- DynamoDB idempotent writes
+- SES email notifications
+- CloudWatch alarms on DLQ depth
+
+</td>
+<td width="60%" style="border: 2px solid #E8A838; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
+
+<img src="./event-driven-order-pipeline/docs/images/architecture/order-pipeline-architecture-dark.png" alt="Event-Driven Order Pipeline Architecture" width="100%">
+
+</td>
+</tr>
+</table>
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
