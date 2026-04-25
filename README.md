@@ -199,6 +199,30 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </tr>
 </table>
 
+### 🤖 **AI Document Summarizer**
+
+<table border="1" cellpadding="15" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 2px solid #FF9900;">
+<tr>
+<td width="30%" style="border: 2px solid #FF9900; padding: 20px; vertical-align: top;">
+
+**[ai-document-summarizer](./ai-document-summarizer/)**  
+*Event-driven document processing pipeline using S3 triggers, Textract, and Amazon Bedrock*
+- S3 event-driven trigger on upload
+- Amazon Textract for PDF text extraction
+- Amazon Bedrock (Claude) for AI summarization
+- DynamoDB for summary storage and retrieval
+- API Gateway REST API for summary access
+- CloudWatch logging
+
+</td>
+<td width="60%" style="border: 2px solid #FF9900; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
+
+<img src="./ai-document-summarizer/docs/images/architectures/ai-document-summarizer-dark.png" alt="AI Document Summarizer Architecture" width="100%">
+
+</td>
+</tr>
+</table>
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
