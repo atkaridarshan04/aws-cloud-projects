@@ -223,6 +223,30 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </tr>
 </table>
 
+### 📊 **Real-Time Streaming Dashboard**
+
+<table border="1" cellpadding="15" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 2px solid #00BCD4;">
+<tr>
+<td width="30%" style="border: 2px solid #00BCD4; padding: 20px; vertical-align: top;">
+
+**[realtime-streaming-dashboard](./realtime-streaming-dashboard/)**  
+*Live kitchen order display using Kinesis Data Streams, Lambda, DynamoDB, and WebSocket API Gateway*
+- Kinesis Data Streams for event ingestion
+- Lambda stream processor with batch processing
+- WebSocket API Gateway for live push to clients
+- DynamoDB for state storage and connection registry
+- REST API for initial page load snapshot
+- Auto-reconnecting browser dashboard
+
+</td>
+<td width="60%" style="border: 2px solid #00BCD4; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
+
+<img src="./realtime-streaming-dashboard/docs/assets/architectures/realtime-streaming-dashboard-dark.png" alt="Real-Time Streaming Dashboard Architecture" width="100%">
+
+</td>
+</tr>
+</table>
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
