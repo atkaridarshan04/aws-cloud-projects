@@ -571,10 +571,7 @@ Expected:
 
 ## Demo Video
 
-<video src="./assets/demo-video/realtime-streaming-demo-video.mp4" controls width="100%">
-  Your browser does not support the video tag.
-</video>
-
+https://github.com/user-attachments/assets/dc9b8d95-fe6a-4d7f-9783-b092786a6b48
 
 ---
 
