@@ -248,6 +248,30 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </tr>
 </table>
 
+### 🔍 **Infrastructure Drift Detection + Auto-Remediation**
+
+<table border="1" cellpadding="15" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 2px solid #FF5252;">
+<tr>
+<td width="30%" style="border: 2px solid #FF5252; padding: 20px; vertical-align: top;">
+
+**[infra-drift-detection](./infra-drift-detection/)**  
+*Continuous compliance monitoring with automatic remediation using AWS Config, EventBridge, and Lambda*
+- AWS Config continuous recording
+- Four managed compliance rules
+- EventBridge `NON_COMPLIANT` routing
+- Lambda auto-remediation
+- SNS email alerts
+- CloudWatch audit trail
+
+</td>
+<td width="60%" style="border: 2px solid #FF5252; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
+
+<img src="./infra-drift-detection/docs/images/architectures/infra-drift-detection-light.png" alt="Infra Drift Detection Architecture" width="100%">
+
+</td>
+</tr>
+</table>
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
