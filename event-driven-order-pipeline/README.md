@@ -241,6 +241,6 @@ All 3 alarms notify via the same SNS topic `dlq-alerts` → your email. This way
 ## 🚀 Deployment Options
 
 - **Console** — follow [docs/console.md](./docs/console.md) for manual step-by-step setup
-<!-- - **Terraform** — follow [docs/terraform.md](./docs/terraform.md) for full IaC deployment -->
+- **Terraform** — follow [docs/terraform.md](./docs/terraform.md) for full IaC deployment
 
 ---

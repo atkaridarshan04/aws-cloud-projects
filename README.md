@@ -166,6 +166,7 @@ This repository contains **AWS cloud projects** demonstrating various services a
 - DynamoDB idempotent writes
 - SES email notifications
 - CloudWatch alarms on DLQ depth
+- **[Terraform](./event-driven-order-pipeline/terraform/)** deployment included
 
 </td>
 <td width="60%" style="border: 2px solid #E8A838; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
