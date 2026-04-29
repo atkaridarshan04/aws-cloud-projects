@@ -4,7 +4,7 @@
 This project builds a serverless URL shortener using AWS services. Instead of using a traditional backend server, it leverages AWS Lambda, API Gateway, DynamoDB, S3, and CloudWatch to create a highly scalable, secure, and cost-effective solution. The frontend is hosted using S3 static website hosting, while API Gateway handles requests to generate and retrieve short URLs. DynamoDB acts as the database for storing URL mappings, and Lambda functions provide the backend logic to process requests. Additionally, CloudWatch is set up to monitor logs and track API requests for debugging and analysis.
 
 ## Architecture
-![url-shortener-architecture](./docs/images/serverless-url-shorterner-architecture-light.png)
+![url-shortener-architecture](./docs/images/architecture/serverless-url-shorterner-architecture-light.png)
 
 ## How It Works
 1. **User submits a long URL** through a web frontend.
@@ -26,11 +26,11 @@ This project builds a serverless URL shortener using AWS services. Instead of us
 - **AWS CloudWatch** – Monitors API Gateway logs.
 
 ## Application Overview
-![final-1](./docs/images/final-1.png)
+![final-1](./docs/images/testing/final-1.png)
 
-![final-2](./docs/images/final-2.png)
+![final-2](./docs/images/testing/final-2.png)
 
-![final-3](./docs/images/final-3.png)
+![final-3](./docs/images/testing/final-3.png)
 
 ## Start Here
 

@@ -4,7 +4,7 @@
 This project demonstrates how to deploy an application on AWS EKS using Application Load Balancer (ALB) for managing traffic and AWS Fargate for running containers without managing servers. Instead of manually provisioning and maintaining worker nodes, we use Fargate as a serverless compute engine to automate scaling and resource allocation. ALB ensures efficient routing and secure access, while IAM roles, OIDC authentication, and Kubernetes ingress rules provide additional security and access control.
 
 ## Architecture
-![eks-farget-alb-architecture](./images/eks-farget-alb-architecture-dark.png)
+![eks-farget-alb-architecture](./images/architecture/eks-farget-alb-architecture-dark.png)
 
 
 ## How It Works
@@ -64,7 +64,7 @@ Ensure the following tools are installed and configured:
   helm version
   ```
 
-   ![version](./images/versions.png)
+   ![version](./images/eks/versions.png)
 
 ## Steps
 
@@ -78,14 +78,14 @@ eksctl create cluster \
     --region ap-south-1 \
     --fargate
 ```
-![eks](./images/eks.png)
+![eks](./images/eks/eks.png)
 
 After the cluster is created, update your kubeconfig to interact with it:
 
 ```bash
 aws eks update-kubeconfig --name demo-cluster --region ap-south-1
 ```
-![kubeconfig](./images/kubeconfig.png)
+![kubeconfig](./images/eks/kubeconfig.png)
 
 ---
 
@@ -101,8 +101,8 @@ eksctl create fargateprofile \
     --namespace game-2048
 ```
 
-![farget-1](./images/farget-1.png)
-![farget-2](./images/farget-2.png)
+![farget-1](./images/testing/farget-1.png)
+![farget-2](./images/testing/farget-2.png)
 
 ---
 
@@ -113,7 +113,7 @@ Deploy your application on the EKS cluster. The example below uses a Kubernetes 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/examples/2048/2048_full.yaml
 ```
-![deployment](./images/deployment.png)
+![deployment](./images/testing/deployment.png)
 
 ---
 
@@ -129,7 +129,7 @@ Associate the iam-oidc-provider, run the following command:
        --cluster demo-cluster \
        --approve
    ```
-![oidc](./images/oidc.png)
+![oidc](./images/eks/oidc.png)
 
 ---
 
@@ -155,7 +155,7 @@ The ALB Ingress Controller enables you to manage Application Load Balancers for 
        --policy-document file://iam_policy.json
    ```
 
-   ![alb-1](./images/alb-1.png)
+   ![alb-1](./images/alb/alb-1.png)
 
 2. **Create a Kubernetes Service Account with IAM Role**
 
@@ -171,7 +171,7 @@ The ALB Ingress Controller enables you to manage Application Load Balancers for 
     --approve
    ```
 
-   ![alb-2](./images/alb-2.png)
+   ![alb-2](./images/alb/alb-2.png)
 
 3. **Deploy ALB Ingress Controller**
 
@@ -182,7 +182,7 @@ The ALB Ingress Controller enables you to manage Application Load Balancers for 
    helm repo update
    ```
 
-   ![alb-5](./images/alb-5.png)
+   ![alb-5](./images/alb/alb-5.png)
 
    Install the ALB Ingress Controller:
 
@@ -195,15 +195,15 @@ The ALB Ingress Controller enables you to manage Application Load Balancers for 
     --set vpcId=<your-vpc-id>
    ```
 
-   ![alb-4](./images/alb-4.png)
+   ![alb-4](./images/alb/alb-4.png)
 
    Verify that the deployments are running.
    ```bash
    kubectl get deployment -n kube-system aws-load-balancer-controller
    ```
 
-   ![alb-5](./images/alb-5.png)
-   ![alb-6](./images/alb-6.png)
+   ![alb-5](./images/alb/alb-5.png)
+   ![alb-6](./images/alb/alb-6.png)
 
 ---
 
@@ -217,10 +217,10 @@ After deploying the ALB Ingress Controller and configuring ingress, verify the A
    kubectl get ingress -n game-2048
    ```
 
-   ![ingress](./images/ingress.png)
+   ![ingress](./images/testing/ingress.png)
    You can access your application by navigating to this URL in a browser.
 
-   ![final](./images/final.png)
+   ![final](./images/testing/final.png)
 
 2. **(Optional)**: Set up a custom domain by configuring DNS settings in Route53 or your DNS provider. Update the Ingress resource to use your custom domain under the `host` field.
 

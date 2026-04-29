@@ -23,7 +23,7 @@ The SNS topic is created first because the Lambda needs its ARN as an environmen
 2. **Type**: **Standard**.
 3. **Name**: `compliance-alerts`.
 4. Leave all other settings as default → **Create topic**.
-  ![sns-1](./images/sns-1.png)
+  ![sns-1](./images/sns/sns-1.png)
 5. Copy the **Topic ARN** — you'll need it in Step 3.
 
 ### 1.1 Subscribe your email
@@ -31,10 +31,10 @@ The SNS topic is created first because the Lambda needs its ARN as an environmen
 1. Open the `compliance-alerts` topic → **Create subscription**.
 2. **Protocol**: **Email**.
 3. **Endpoint**: your email address.
-  ![sns-2](./images/sns-2.png)
+  ![sns-2](./images/sns/sns-2.png)
 4. **Create subscription**.
 5. Check your inbox — you'll receive a confirmation email from AWS. Click **Confirm subscription**.
-  ![sns-3](./images/sns-3.png)
+  ![sns-3](./images/sns/sns-3.png)
 
 > The subscription must be confirmed before SNS can deliver messages to it.
 
@@ -44,9 +44,9 @@ The SNS topic is created first because the Lambda needs its ARN as an environmen
 
 1. Go to **IAM** → **Roles** → **Create role**.
 2. **Trusted entity**: AWS service → **Lambda** → **Next**.
-  ![iam-1](./images/iam-1.png)
+  ![iam-1](./images/iam/iam-1.png)
 3. Attach managed policy: **AWSLambdaBasicExecutionRole** → **Next**.
-  ![iam-2](./images/iam-2.png)
+  ![iam-2](./images/iam/iam-2.png)
 4. **Role name**: `remediator-lambda-role` → **Create role**.
 5. Open the role → **Add permissions** → **Create inline policy** → **JSON** tab.
 6. Paste the following policy:
@@ -87,7 +87,7 @@ The SNS topic is created first because the Lambda needs its ARN as an environmen
 
 7. **Policy name**: `remediator-lambda-policy` → **Create policy**.
 
-  ![iam-3](./images/iam-3.png)
+  ![iam-3](./images/iam/iam-3.png)
 
 ---
 
@@ -97,7 +97,7 @@ The SNS topic is created first because the Lambda needs its ARN as an environmen
 2. **Function name**: `remediator-function`.
 3. **Runtime**: Python 3.12.
 4. **Execution role**: use existing role → `remediator-lambda-role`.
-  ![lambda-1](./images/lambda-1.png)
+  ![lambda-1](./images/lambda/lambda-1.png)
 5. **Create function**.
 
 ### 3.1 Configure timeout
@@ -106,7 +106,7 @@ The SNS topic is created first because the Lambda needs its ARN as an environmen
 2. **Timeout**: `30 sec` (remediation API calls are fast).
 3. **Save**.
 
-  ![lambda-2](./images/lambda-2.png)
+  ![lambda-2](./images/lambda/lambda-2.png)
 
 ### 3.2 Add environment variables
 
@@ -115,7 +115,7 @@ The SNS topic is created first because the Lambda needs its ARN as an environmen
    - **Value**: the Topic ARN you copied in Step 1
 2. **Save**.
 
-  ![lambda-3](./images/lambda-3.png)
+  ![lambda-3](./images/lambda/lambda-3.png)
 
 ### 3.3 Deploy the function code
 
@@ -251,7 +251,7 @@ Config requires explicit permission to write to the delivery bucket. Without a b
 
 1. Go to **S3** → **Create bucket**.
 2. Select Regional Namespace -> **Bucket name**: `config-delivery`
-  ![s3-1](./images/s3-1.png)
+  ![s3-1](./images/s3/s3-1.png)
 3. Leave all defaults → **Create bucket**.
 4. Open the bucket → **Permissions** tab → **Bucket policy** → **Edit**.
 5. Paste the following policy, replacing `<your-account-id>` and `<your-region>`:
@@ -293,7 +293,7 @@ Config requires explicit permission to write to the delivery bucket. Without a b
 }
 ```
 
-![s3-2](./images/s3-2.png)
+![s3-2](./images/s3/s3-2.png)
 
 6. **Save changes**.
 
@@ -312,15 +312,15 @@ Config requires explicit permission to write to the delivery bucket. Without a b
      - `AWS::IAM::User` *(needed for root MFA rule)*
    - **AWS Config role**: **Create AWS Config service-linked role** (or use existing if you have one).
 
-      ![config-1](./images/config-1.png)
+      ![config-1](./images/config/config-1.png)
 
    - **Delivery channel**:
      - **S3 bucket**: select **Choose a bucket from your account** → `<your-bucket-name>`.
      - **SNS topic**: leave empty (we use EventBridge for routing, not SNS from Config directly).
 
-      ![config-2](./images/config-2.png)
+      ![config-2](./images/config/config-2.png)
 3. **Next** → **Save** (skip the rules page — we'll add rules in Step 4.4). 
-    ![config-3](./images/config-3.png)
+    ![config-3](./images/config/config-3.png)
 
 ### 4.3 Verify Config is recording
 
@@ -334,13 +334,13 @@ Config requires explicit permission to write to the delivery bucket. Without a b
 1. Go to **AWS Config** → **Rules** → **Add rule**.
 2. **Rule type**: **AWS managed rule**.
 3. Search for `s3-bucket-versioning-enabled` → select it → **Next**.
-  ![config-4](./images/config-4.png)
+  ![config-4](./images/config/config-4.png)
 4. **Rule name**: leave as `s3-bucket-versioning-enabled`.
-  ![config-5](./images/config-5.png)
+  ![config-5](./images/config/config-5.png)
 5. **Scope of changes**: **Resources** → **Resource type**: `AWS::S3::Bucket`.
-  ![config-6](./images/config-6.png)
+  ![config-6](./images/config/config-6.png)
 6. **Next** → **Save**.
-  ![config-7](./images/config-7.png)
+  ![config-7](./images/config/config-7.png)
 
 #### Rule 2: `s3-bucket-public-read-prohibited`
 
@@ -363,7 +363,7 @@ Config requires explicit permission to write to the delivery bucket. Without a b
 3. **Scope**: this rule evaluates the account itself — leave scope settings as default.
 4. **Next** → **Save**.
 
-![config-8](./images/config-8.png)
+![config-8](./images/config/config-8.png)
 
 #### Verify initial evaluation
 
@@ -382,9 +382,9 @@ This rule listens for Config compliance change events and invokes the Lambda for
 1. Go to **Amazon EventBridge** → **Rules** → **Create rule**.
 2. **Name**: `config-noncompliant-to-lambda`.
 3. **Event bus**: **default**.
-  ![eventbridge-1](./images/eventbridge-1.png)
+  ![eventbridge-1](./images/eventbridge/eventbridge-1.png)
 4. **Event source**: **AWS events or EventBridge partner events**.
-  ![eventbridge-2](./images/eventbridge-2.png)
+  ![eventbridge-2](./images/eventbridge/eventbridge-2.png)
 5. **Event pattern** — select **Custom pattern (JSON editor)** and paste:
 6. The pattern should look like:
 ```json
@@ -398,19 +398,19 @@ This rule listens for Config compliance change events and invokes the Lambda for
   }
 }
 ```
-  ![eventbridge-3](./images/eventbridge-3.png)
+  ![eventbridge-3](./images/eventbridge/eventbridge-3.png)
 7. **Next**.
 8. **Target**:
    - **Target types**: **AWS service**.
    - **Select a target**: **Lambda function**.
    - **Function**: `remediator-function`.
    - **Execution role**: **Create a new role for this specific resource** — EventBridge will auto-create a role with `lambda:InvokeFunction` scoped to this function.
-   ![eventbridge-4](./images/eventbridge-4.png)
+   ![eventbridge-4](./images/eventbridge/eventbridge-4.png)
 9. **Next** → Review 
-  ![eventbridge-5](./images/eventbridge-5.png)
-  ![eventbridge-6](./images/eventbridge-6.png)
+  ![eventbridge-5](./images/eventbridge/eventbridge-5.png)
+  ![eventbridge-6](./images/eventbridge/eventbridge-6.png)
 10. **Create rule**.
-  ![eventbridge-7](./images/eventbridge-7.png)
+  ![eventbridge-7](./images/eventbridge/eventbridge-7.png)
 
 
 ---
@@ -425,10 +425,10 @@ Now trigger real violations and watch the full pipeline fire.
 
 1. Go to **S3** → create a new test bucket: `drift-test-bucket`.
 2. Leave versioning disabled (the default).
-  ![s3-3](./images/s3-3.png)
+  ![s3-3](./images/s3/s3-3.png)
 
     After creation:
-      ![s3-4](./images/s3-4.png)
+      ![s3-4](./images/s3/s3-4.png)
 3. Wait 2–3 minutes for Config to detect the new bucket and evaluate it.
 
 **Watch the pipeline:**
@@ -443,13 +443,13 @@ Now trigger real violations and watch the full pipeline fire.
    Resource: AWS::S3::Bucket / drift-test-bucket
    Action:   Versioning re-enabled on bucket 'drift-test-bucket'.
    ```
-   ![logs-1](./images/logs-1.png)
+   ![logs-1](./images/testing/logs-1.png)
 8. Check your email — you should have received the SNS notification.
-    ![email-1](./images/email-1.png)
+    ![email-1](./images/testing/email-1.png)
 9. Go to **S3** → `drift-test-bucket` → **Properties** → **Bucket Versioning** — it should now show **Enabled**.
-  ![s3-5](./images/s3-5.png)
+  ![s3-5](./images/s3/s3-5.png)
 10. Check the compliance status in Config again — it should now be **Compliant**.
-  ![config-9](./images/config-9.png)
+  ![config-9](./images/config/config-9.png)
 
 ---
 
@@ -487,9 +487,9 @@ Now trigger real violations and watch the full pipeline fire.
    - **Type**: SSH
    - **Source**: Anywhere-IPv4 (`0.0.0.0/0`)
    
-   ![sg-1](./images/sg-1.png)
+   ![sg-1](./images/testing/sg-1.png)
 6. **Create security group**.
-  ![sg-2](./images/sg-2.png)
+  ![sg-2](./images/testing/sg-2.png)
 
 **Watch the pipeline:**
 
@@ -501,11 +501,11 @@ Now trigger real violations and watch the full pipeline fire.
    Resource: AWS::EC2::SecurityGroup / sg-xxxxxxxxxxxxxxxxx
    Action:   Revoked port 22 ingress from 0.0.0.0/0 on security group 'sg-xxxxxxxxxxxxxxxxx'.
    ```
-   ![logs-2](./images/logs-2.png)
+   ![logs-2](./images/testing/logs-2.png)
 9. Check your email for the SNS notification.
-  ![email-2](./images/email-2.png)
+  ![email-2](./images/testing/email-2.png)
 10. Go to **EC2** → **Security Groups** → `drift-test-sg` → **Inbound rules** — the SSH rule should be gone.
-  ![sg-3](./images/sg-3.png)
+  ![sg-3](./images/testing/sg-3.png)
 
 ---
 
@@ -525,7 +525,7 @@ Now trigger real violations and watch the full pipeline fire.
 ## Step 7: Verify the Audit Trail in CloudWatch
 
 1. Go to **CloudWatch** → **Log groups** → `/aws/lambda/remediator-function`.
-  ![logs-3](./images/logs-3.png)
+  ![logs-3](./images/testing/logs-3.png)
 2. Open the log streams — each Lambda invocation has its own stream.
 3. Each stream contains the full event received from EventBridge and the action taken.
 
@@ -551,4 +551,4 @@ Delete in this order to avoid dependency errors:
 10. **IAM** → delete `remediator-lambda-role`
 
 > **Note on Config:** Disabling the Config recorder stops new recordings but does not delete existing configuration history. The history remains in the S3 delivery bucket until you empty and delete it.
-![s3-6](./images/s3-6.png)
+![s3-6](./images/s3/s3-6.png)

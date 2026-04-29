@@ -12,7 +12,7 @@
    - `AmazonDynamoDBFullAccess`
    - `IAMFullAccess`
    - `CloudWatchFullAccess`
-    ![iam](./images/iam.png)
+    ![iam](./images/iam/iam.png)
 6. Click **Create User** and **log in** with this IAM user to continue.
 
 
@@ -20,22 +20,22 @@
 1. Navigate to **DynamoDB Console** → **Tables** → **Create Table**.
 2. Enter **Table Name**: `ShortenedURLs`.
 3. **Partition Key**: `shortId` (String).
-    ![db-1](./images/db-1.png)
+    ![db-1](./images/dynamodb/db-1.png)
 4. Leave other settings as default and click **Create Table**.
-    ![db-2](./images/db-2.png)
+    ![db-2](./images/dynamodb/db-2.png)
 
 
 ## Step 3: Create an IAM Role for Lambda to Access DynamoDB
 1. Navigate to **IAM Console** → **Roles** → **Create Role**.
 2. **Trusted Entity Type**: Choose **AWS Service**.
 3. **Use Case**: Select **Lambda**.
-    ![role-1](./images/role-1.png)
+    ![role-1](./images/iam/role-1.png)
 4. Click **Next** and attach the **AmazonDynamoDBFullAccess** policy.
-    ![role-2](./images/role-2.png)
+    ![role-2](./images/iam/role-2.png)
 5. Enter **Role Name**: `AmazonDynamoDBFullAccess`.
-    ![role-3](./images/role-3.png)
+    ![role-3](./images/iam/role-3.png)
 6. Click **Create Role**.
-    ![role-4](./images/role-4.png)
+    ![role-4](./images/iam/role-4.png)
 
 
 
@@ -45,9 +45,9 @@
 2. Select **Author from Scratch**.
 3. Enter **Function Name**: `CreateShortURL`.
 4. Runtime: **Python 3.x**.
-    ![lam-1](./images/lam-1.png)
+    ![lam-1](./images/lambda/lam-1.png)
 5. **Execution Role**: Choose `Use an existing role` → Attach `AmazonDynamoDBFullAccess`.
-    ![lam-2](./images/lam-2.png)
+    ![lam-2](./images/lambda/lam-2.png)
 6. Click **Create Function**.
 7. Replace the function code with the following (update `API_GATEWAY_ENDPOINT` accordingly):
    ```python
@@ -83,11 +83,11 @@
             return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
    ```
 8. Deploy the function.
-    ![lam-3](./images/lam-3.png)
+    ![lam-3](./images/lambda/lam-3.png)
 
 ### 4.2 Create URL Redirection Lambda Function
 1. **Create another Lambda function** named `RedirectURL` (repeat steps above).
-    ![lam-4](./images/lam-4.png)
+    ![lam-4](./images/lambda/lam-4.png)
 2. Replace the function code with:
    ```python
     import json
@@ -110,9 +110,9 @@
         except Exception as e:
             return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
    ```
-    ![lam-5](./images/lam-5.png)
+    ![lam-5](./images/lambda/lam-5.png)
 3. Deploy the function.
-    ![lam-6](./images/lam-6.png)
+    ![lam-6](./images/lambda/lam-6.png)
 
 
 ## Step 5: Create API Gateway
@@ -121,53 +121,53 @@
     - Select Lambda -> Select the Lambda Function
     - Do for both lambda function
 
-    ![api-gw-1](./images/api-gw-1.png)
+    ![api-gw-1](./images/api-gateway/api-gw-1.png)
 3. **Add Routes**:
    - `POST /create` → Integration: `CreateShortURL Lambda`
    - `GET /{shortId}` → Integration: `RedirectURL Lambda`
 
-   ![api-gw-2](./images/api-gw-2.png)
+   ![api-gw-2](./images/api-gateway/api-gw-2.png)
 4. Define Stage as `prod` and enable `Auto-deploy`
-    ![api-gw-3](./images/api-gw-3.png)
+    ![api-gw-3](./images/api-gateway/api-gw-3.png)
 5. View Configuration and click Create
-    ![api-gw-4](./images/api-gw-4.png)
-    ![api-gw-5](./images/api-gw-5.png)
+    ![api-gw-4](./images/api-gateway/api-gw-4.png)
+    ![api-gw-5](./images/api-gateway/api-gw-5.png)
 6. **Copy the Invoke URL**.
-    ![api-gw-6](./images/api-gw-6.png)
+    ![api-gw-6](./images/api-gateway/api-gw-6.png)
 
 ### Update the **API_GATEWAY_ENDPOINT**
 1. Navigate to AWS Lambda and Edit the **CreateShortURL** Lambda Function and update the code with your `API_GATEWAY_ENDPOINT`
-    ![lam-update-2](./images/lam-update-2.png)
-    ![lam-update-1](./images/lam-update-1.png)
+    ![lam-update-2](./images/lambda/lam-update-2.png)
+    ![lam-update-1](./images/lambda/lam-update-1.png)
 
 2. Also Upate it the `index.html`
-    ![html](./images/html.png)
+    ![html](./images/testing/html.png)
 
 
 ## Step 6: Configure CloudWatch Logging for API Gateway
 1. Navigate to **CloudWatch Console** → **Log Groups** → **Create Log Group**.
-    ![log-1](./images/log-1.png)
+    ![log-1](./images/cloudwatch/log-1.png)
 2. Enter **Log Group Name**: `url-shortener-logs`.
 3. Click **Create**.
-    ![log-2](./images/log-2.png)
-    ![log-3](./images/log-3.png)
+    ![log-2](./images/cloudwatch/log-2.png)
+    ![log-3](./images/cloudwatch/log-3.png)
 4. Copy the **Log Group ARN**.
-    ![log-4](./images/log-4.png)
+    ![log-4](./images/cloudwatch/log-4.png)
 5. Go to **API Gateway Console** → **APIs** → Select your API → **Logging**.
-    ![log-5](./images/log-5.png)
+    ![log-5](./images/cloudwatch/log-5.png)
 6. Under **Logging**, select the stage (`prod`)
-    ![log-6](./images/log-6.png)
+    ![log-6](./images/cloudwatch/log-6.png)
 7. Enter the copied ARN as log destination, and save changes.
-    ![log-7](./images/log-7.png)
+    ![log-7](./images/cloudwatch/log-7.png)
 
 
 ## Step 7: Deploy Frontend on S3
 1. Navigate to **S3 Console** → **Create Bucket**.
 2. Enter a **Unique Bucket Name**.
 3. Uncheck **Block Public Access** and acknowledge the warning.
-    ![s3-1](./images/s3-1.png)
+    ![s3-1](./images/s3/s3-1.png)
 4. Upload `index.html` to the bucket.
-    ![s3-2](./images/s3-2.png)
+    ![s3-2](./images/s3/s3-2.png)
 5. Set **Bucket Policy**:
    ```json
    {
@@ -181,11 +181,11 @@
    }
    ```
 
-    ![s3-1](./images/s3-3.png)
-    ![s3-2](./images/s3-4.png)
+    ![s3-1](./images/s3/s3-3.png)
+    ![s3-2](./images/s3/s3-4.png)
 6. Enable **Static Website Hosting**.
-    ![s3-1](./images/s3-5.png)
-    ![s3-1](./images/s3-6.png)
+    ![s3-1](./images/s3/s3-5.png)
+    ![s3-1](./images/s3/s3-6.png)
 
     #### **Copy the S3 Bucket Website Endpoint**
 
@@ -198,19 +198,19 @@ Navigate to API Gateway -> API -> Select API Gateway -> CORS configure CORS to a
 - Select the Access-Control-Allow-Methods to `POST`
 - And Access-Control-Allow-Header to 'content-type'
 - Click Save
-    ![cors](./images/cors.png)
+    ![cors](./images/api-gateway/cors.png)
 
 
 ## Step 9: Test Everything
 - Open **S3 website URL** → Enter a long URL → Click Shorten.
 - Open the generated short URL, u will be redirected to the original URL.
-    ![final-1](./images/final-1.png)
+    ![final-1](./images/testing/final-1.png)
 
 - Go to **DynamoDB** to see the generated records 
-    ![final-3](./images/final-3.png)
+    ![final-3](./images/testing/final-3.png)
 
 - GO to **CLoudWatch -> Live Tail** and select the log group
-    ![final-2](./images/final-2.png)
+    ![final-2](./images/testing/final-2.png)
 
 
 ## Cleanup

@@ -4,7 +4,7 @@ Complete CI/CD automation pipeline for AWS infrastructure deployment and applica
 
 ## 🏗️ Architecture Overview
 
-![Architecture Diagram](./assets/tgad_architecture_light.png)
+![Architecture Diagram](./assets/architecture/tgad_architecture_light.png)
 
 This project implements a modern DevOps automation pipeline with:
 - **Infrastructure as Code** using Terraform with remote state
@@ -50,7 +50,7 @@ Go to **Settings** → **Secrets and variables** → **Actions** and add:
 | `AWS_ACCOUNT_ID` | Your 12-digit AWS account ID | Required for OIDC role assumption |
 | `AWS_REGION` | `eu-north-1` (or your preferred region) | AWS region for deployments |
 
-![GitHub Secrets Setup](./assets/github-secrets.png)
+![GitHub Secrets Setup](./assets/github/github-secrets.png)
 
 ### Step 3: Automated Infrastructure Deployment
 
@@ -65,7 +65,7 @@ git commit -m "Update infrastructure"
 git push origin main
 ```
 
-![GitHub Actions Terraform Workflow](./assets/tf-apply-pipeline.png)
+![GitHub Actions Terraform Workflow](./assets/terraform/tf-apply-pipeline.png)
 
 ### Step 4: Automated Application Deployment
 
@@ -80,7 +80,7 @@ git commit -m "Update application"
 git push origin main
 ```
 
-![GitHub Actions Application Workflow](./assets/app-pipeline.png)
+![GitHub Actions Application Workflow](./assets/testing/app-pipeline.png)
 
 ### Step 5: Verify Deployment
 
@@ -88,17 +88,17 @@ git push origin main
 2. Navigate to EC2 and take the public IP of the ECS instances
 3. In your browser, go to `http://<ECS_INSTANCE_PUBLIC_IP>:8080`
 
-![app-v1](./assets/app-v1.png)
+![app-v1](./assets/testing/app-v1.png)
 
-![app-v2](./assets/app-v2.png)
+![app-v2](./assets/testing/app-v2.png)
 
 ## 📊 Automation Results
 
 ### GitHub Actions Workflows
-![Actions Overview](./assets/actions-overview.png)
+![Actions Overview](./assets/testing/actions-overview.png)
 
 ### AWS Resources
-![ECR Repository](./assets/ecr.png)
+![ECR Repository](./assets/testing/ecr.png)
 
 ## 🧹 Automated Cleanup
 
@@ -109,6 +109,6 @@ git push origin main
 4. Type `DESTROY` in confirmation
 5. Click "Run workflow"
 
-![Destroy Workflow](./assets/tf-destroy-pipeline.png)
+![Destroy Workflow](./assets/terraform/tf-destroy-pipeline.png)
 
 ---

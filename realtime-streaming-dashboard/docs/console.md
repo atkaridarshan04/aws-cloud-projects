@@ -44,7 +44,7 @@ Complete step-by-step guide to manually set up the Real-Time Streaming Dashboard
 4. **Create table**.
 
 
-![dynamodb-1](./assets/dynamodb-1.png)
+![dynamodb-1](./assets/dynamodb/dynamodb-1.png)
 
 ---
 
@@ -57,11 +57,11 @@ Complete step-by-step guide to manually set up the Real-Time Streaming Dashboard
 
 > **Why On-demand?** On-demand automatically scales shard capacity based on traffic — no need to pre-provision shards for a demo workload. For production with predictable throughput, Provisioned mode is more cost-effective.
 
-![kinesis-1](./assets/kinesis-1.png)
+![kinesis-1](./assets/kinesis/kinesis-1.png)
 
 5. Once created, copy the **Stream ARN** — needed for the IAM policy.
 
-![kinesis-2](./assets/kinesis-2.png)
+![kinesis-2](./assets/kinesis/kinesis-2.png)
 
 ---
 
@@ -73,9 +73,9 @@ This role is for the `stream-processor` Lambda — it needs to read from Kinesis
 
 1. Go to **IAM** → **Roles** → **Create role**.
 2. **Trusted entity**: AWS service → **Lambda** → **Next**.
-  ![iam-1](./assets/iam-1.png)
+  ![iam-1](./assets/iam/iam-1.png)
 3. Attach managed policy: **AWSLambdaBasicExecutionRole** → **Next**.
-  ![iam-2](./assets/iam-2.png)
+  ![iam-2](./assets/iam/iam-2.png)
 4. **Role name**: `stream-processor-role` → **Create role**.
 5. Open the role → **Add permissions** → **Create inline policy** → **JSON** tab:
 
@@ -125,11 +125,11 @@ This role is for the `stream-processor` Lambda — it needs to read from Kinesis
 
 > Replace `<your-region>` and `<your-account-id>` with your actual values. The `execute-api:ManageConnections` permission is what allows Lambda to push messages to connected WebSocket clients.
 
-![iam-3](./assets/iam-3.png)
+![iam-3](./assets/iam/iam-3.png)
 
 6. **Policy name**: `stream-processor-policy` → **Create policy**.
 
-![iam-4](./assets/iam-4.png)
+![iam-4](./assets/iam/iam-4.png)
 
 ---
 
@@ -203,7 +203,7 @@ This role is for the `stream-processor` Lambda — it needs to read from Kinesis
 
 4. **Policy name**: `get-state-policy` → **Create policy**.
 
-![iam-5](./assets/iam-5.png)
+![iam-5](./assets/iam/iam-5.png)
 
 ---
 
@@ -215,7 +215,7 @@ This role is for the `stream-processor` Lambda — it needs to read from Kinesis
 
 1. Go to **Lambda** → **Create function** → **Author from scratch**.
 2. **Function name**: `ws-connect` → **Runtime**: Python 3.12 → **Role**: `ws-connect-role`.
-  ![lambda-1](./assets/lambda-1.png)
+  ![lambda-1](./assets/lambda/lambda-1.png)
 3. **Create function**. Replace code:
 
 ```python
@@ -324,9 +324,9 @@ def lambda_handler(event, context):
    - `WEBSOCKET_API_ID` — fill in after creating the WebSocket API in Step 8
    - `WEBSOCKET_STAGE` — `production`
 
-   ![lambda-4](./assets/lambda-4.png)
+   ![lambda-4](./assets/lambda/lambda-4.png)
 5. Go to **Configuration** → **General configuration** → **Edit** → **Timeout**: `1 min` → **Save**.
-  ![lambda-3](./assets/lambda-3.png)
+  ![lambda-3](./assets/lambda/lambda-3.png)
 
 ---
 
@@ -356,7 +356,7 @@ def lambda_handler(event, context):
 
 3. **Deploy**.
 
-![lambda-2](./assets/lambda-2.png)
+![lambda-2](./assets/lambda/lambda-2.png)
 
 ---
 
@@ -365,23 +365,23 @@ def lambda_handler(event, context):
 1. Go to **API Gateway** → **Create API** → **WebSocket API** → **Build**.
 2. **API name**: `dashboard-ws`.
 3. **Route selection expression**: `$request.body.action`.
-   ![api-ws-1](./assets/api-ws-1.png)
+   ![api-ws-1](./assets/api-gateway/api-ws-1.png)
 4. Click **Next** → **Add routes**:
    - Click **Add `$connect` route**
    - Click **Add `$disconnect` route**
    - Do **not** add `$default` — the kitchen screen only receives pushes, it never sends messages to the server
-   ![api-ws-2](./assets/api-ws-2.png)
+   ![api-ws-2](./assets/api-gateway/api-ws-2.png)
 5. Click **Next** → **Attach integrations**:
    - For `$connect` → **Create and attach an integration** → Integration type: Lambda → select `ws-connect`
    - For `$disconnect` → **Create and attach an integration** → Integration type: Lambda → select `ws-disconnect`
-   ![api-ws-3](./assets/api-ws-3.png)
+   ![api-ws-3](./assets/api-gateway/api-ws-3.png)
 6. Click **Next** → **Next** → **Stage name**: `production` → **Create and deploy**.
-   ![api-ws-4](./assets/api-ws-4.png)
-   ![api-ws-5](./assets/api-ws-5.png)
+   ![api-ws-4](./assets/api-gateway/api-ws-4.png)
+   ![api-ws-5](./assets/api-gateway/api-ws-5.png)
 7. From the API settings, copy:
    - **API ID** (e.g., `abc123xyz`) → this is your `WEBSOCKET_API_ID`
    - **WebSocket URL** (e.g., `wss://abc123xyz.execute-api.us-east-1.amazonaws.com/production`)
-   ![api-ws-6](./assets/api-ws-6.png)
+   ![api-ws-6](./assets/api-gateway/api-ws-6.png)
 
 8. Go back to the `stream-processor` Lambda → **Configuration** → **Environment variables** → set `WEBSOCKET_API_ID` to the API ID you just copied.
 
@@ -392,19 +392,19 @@ def lambda_handler(event, context):
 1. Go to **API Gateway** → **Create API** → **HTTP API** → **Build**.
 2. **API name**: `dashboard-rest`.
 3. **Add integration** → Lambda → `get-state`.
-  ![api-http-1](./assets/api-http-1.png)
+  ![api-http-1](./assets/api-gateway/api-http-1.png)
 4. **Configure routes**:
     - **Method**: `GET`
     - **Resource path**: `/state`
     - **Integration target**: `get-state`
-  ![api-http-2](./assets/api-http-2.png)
+  ![api-http-2](./assets/api-gateway/api-http-2.png)
 5. **Stage**: `$default`, **Auto-deploy** enabled → **Create**.
-  ![api-http-3](./assets/api-http-3.png)
-  ![api-http-4](./assets/api-http-4.png)
+  ![api-http-3](./assets/api-gateway/api-http-3.png)
+  ![api-http-4](./assets/api-gateway/api-http-4.png)
 6. Copy the **Invoke URL** — used in the producer script and browser client.
-  ![api-http-5](./assets/api-http-5.png)
+  ![api-http-5](./assets/api-gateway/api-http-5.png)
 
-![api-http-6](./assets/api-http-6.png)
+![api-http-6](./assets/api-gateway/api-http-6.png)
 
 ---
 
@@ -415,9 +415,9 @@ def lambda_handler(event, context):
 3. **Kinesis stream**: `dashboard-stream`.
 4. **Batch size**: `10` — Lambda receives up to 10 records per invocation.
 5. **Starting position**: **Latest** — process only new records, not historical.
-  ![lambda-5](./assets/lambda-5.png)
+  ![lambda-5](./assets/lambda/lambda-5.png)
 6. **Enable trigger** → **Add**.
-  ![lambda-6](./assets/lambda-6.png)
+  ![lambda-6](./assets/lambda/lambda-6.png)
 
 ---
 
@@ -502,7 +502,7 @@ python producer.py
 1. Go to **Kinesis** → `dashboard-stream` → **Monitoring** tab.
 2. You should see **Put records** metrics rising as the producer runs.
 
-![kinesis-3](./assets/kinesis-3.png)
+![kinesis-3](./assets/kinesis/kinesis-3.png)
 
 ---
 
@@ -518,7 +518,7 @@ python producer.py
 1. Go to **DynamoDB** → `stream-state` → **Explore table items**.
 2. You should see order items appearing with `status: NEW`, then updating to `PREPARING` and `READY` as the producer runs.
 
-![dynamodb-3](./assets/dynamodb-3.png)
+![dynamodb-3](./assets/dynamodb/dynamodb-3.png)
 
 ---
 
@@ -531,13 +531,13 @@ python producer.py
    const REST_URL = 'https://<your-rest-invoke-url>/state';
    ```
 
-   ![dashboard-1](./assets/dashboard-1.png)
+   ![dashboard-1](./assets/testing/dashboard-1.png)
 
 3. Save the file and open it in your browser.
-    ![dashboard-2](./assets/dashboard-2.png)
+    ![dashboard-2](./assets/testing/dashboard-2.png)
 
 4. Check the connection in the AWS Dynamodb `connections` table — a new item should appear when you open the dashboard, and disappear when you close it.
-    ![dynamodb-2](./assets/dynamodb-2.png)
+    ![dynamodb-2](./assets/dynamodb/dynamodb-2.png)
 
 4. The dashboard loads all current active orders from the REST endpoint immediately.
 

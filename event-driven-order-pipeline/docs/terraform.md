@@ -156,7 +156,7 @@ Expected response:
 ### Test DLQ alarms
 
 If something goes wrong in a Lambda (e.g., code error, timeout), the failed event goes to the corresponding DLQ. After 1 failure, the CloudWatch alarm triggers and sends a notification to your email.
-![tf-dlq-test](./images/terraform/tf-dlq-test.png)
+![tf-dlq-test](./images/terraform/tf-email-alert-dlq.png)
 
 ---
 

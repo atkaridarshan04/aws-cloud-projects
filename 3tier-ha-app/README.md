@@ -9,9 +9,9 @@ This repo includes two end‑to‑end deployment paths:
 
 ## Architecture
 
-![vpc-auto-scaling-architecture](./docs/images/vpc-auto-scaling-architecture.png)
+![vpc-auto-scaling-architecture](./docs/images/architecture/vpc-auto-scaling-architecture.png)
 
-![architecture](./docs/images/architecture.png)
+![architecture](./docs/images/architecture/architecture.png)
 
 ### Core components
 
@@ -83,11 +83,11 @@ The application follows a **classic 3-tier pattern** on AWS with clear separatio
 
 ## Application Overview
 
-![app-1](./docs/images/app-1.png)
-![app-2](./docs/images/app-2.png)
-![app-3](./docs/images/app-3.png)
-![result-dynamodb](./docs/images/result-dynamodb.png)
-![result-s3](./docs/images/result-s3.png)
+![app-1](./docs/images/app/app-1.png)
+![app-2](./docs/images/app/app-2.png)
+![app-3](./docs/images/app/app-3.png)
+![result-dynamodb](./docs/images/storage/result-dynamodb.png)
+![result-s3](./docs/images/storage/result-s3.png)
 
 
 ## Quick Start

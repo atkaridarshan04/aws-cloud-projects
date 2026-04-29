@@ -8,7 +8,7 @@ This project demonstrates a **complete CI/CD pipeline** for containerized applic
 
 <div align="center">
 
-![ECS CI/CD Architecture](./docs/assets/ecs_cicd_architecture_light.png)
+![ECS CI/CD Architecture](./docs/assets/architecture/ecs_cicd_architecture_light.png)
 
 </div>
 
@@ -37,20 +37,20 @@ This project demonstrates a **complete CI/CD pipeline** for containerized applic
 ## 🔄 **Deployment Overview**
 
 ***CodePipeline Architecture:***
-![codepipeline-architecture](./docs/assets/tf_codepipeline.png)
-![codepipeline-details](./docs/assets/tf_codepipeline_execution.png)
+![codepipeline-architecture](./docs/assets/terraform/tf_codepipeline.png)
+![codepipeline-details](./docs/assets/terraform/tf_codepipeline_execution.png)
 
 ***CodeBuild Executions***
-![code_build](./docs/assets/tf_codebuild.png)
+![code_build](./docs/assets/terraform/tf_codebuild.png)
 
 ***ECR Repository with Images***
-![ecr-repo](./docs/assets/tf_ecr.png)
+![ecr-repo](./docs/assets/terraform/tf_ecr.png)
 
 ***ECS Service with Running Tasks***
-![ecs-service](./docs/assets/tf_ecs.png)
+![ecs-service](./docs/assets/terraform/tf_ecs.png)
 
 ***S3 Bucket for CodePipeline Artifacts***
-![s3-bucket](./docs/assets/tf_s3.png)
+![s3-bucket](./docs/assets/terraform/tf_s3.png)
 
 
 

@@ -9,7 +9,7 @@ This repo includes two end-to-end deployment paths:
 
 ## Architecture
 
-![s3-cloudfront-architecture](./docs/images/s3-cloudfront-architecture.png)
+![s3-cloudfront-architecture](./docs/images/architecture/s3-cloudfront-architecture.png)
 
 ### Core Components
 
@@ -77,7 +77,7 @@ The application follows a **secure static hosting pattern** with clear separatio
 
 ## Application Overview
 
-![web](./docs/images/web.png)
+![web](./docs/images/testing/web.png)
 
 The deployed website demonstrates:
 - Fast global content delivery via CloudFront

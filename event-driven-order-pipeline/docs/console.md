@@ -24,11 +24,11 @@ Complete step-by-step guide to manually set up the event-driven order processing
 
 1. Go to **Amazon SES** → **Configuration** -> **Identities** → **Create Identity**.
 2. Select **Email Address**, enter your sender email (e.g., `orders@yourdomain.com`), click **Create Identity**.
-  ![ses-1](./images/ses-1.png)
+  ![ses-1](./images/ses/ses-1.png)
 3. Check your inbox and click the verification link.
-  ![ses-2](./images/ses-2.png)
+  ![ses-2](./images/ses/ses-2.png)
 4. Repeat for your test recipient email address.
-  ![ses-3](./images/ses-3.png)
+  ![ses-3](./images/ses/ses-3.png)
 
 Both emails must show **Verified** status before proceeding.
 
@@ -54,9 +54,9 @@ We need 4 roles — one per Lambda. Each gets only the permissions it needs.
 
 1. Go to **IAM** → **Roles** → **Create Role**.
 2. **Trusted entity**: AWS Service → **Lambda** → Next.
-  ![iam-1](./images/iam-1.png)
+  ![iam-1](./images/iam/iam-1.png)
 3. Attach policy: **AWSLambdaBasicExecutionRole** (for CloudWatch logs).
-  ![iam-2](./images/iam-2.png)
+  ![iam-2](./images/iam/iam-2.png)
 4. Click **Next**, name it `order-intake-role` → **Create Role**.
 5. Open the role → **Add permissions** → **Create inline policy**.
 6. Switch to **JSON** tab, paste:
@@ -72,10 +72,10 @@ We need 4 roles — one per Lambda. Each gets only the permissions it needs.
      ]
    }
    ```
-    ![iam-3](./images/iam-3.png)
+    ![iam-3](./images/iam/iam-3.png)
 7. Name it `allow-sns-publish` → **Create policy**.
-  ![iam-4](./images/iam-4.png)
-  ![iam-5](./images/iam-5.png)
+  ![iam-4](./images/iam/iam-4.png)
+  ![iam-5](./images/iam/iam-5.png)
 
 > We'll update the `Resource` to the exact SNS ARN after creating the topic.
 
@@ -165,7 +165,7 @@ We need 4 roles — one per Lambda. Each gets only the permissions it needs.
 3. Name it `allow-sqs-consume` → **Create policy**.
 
 ### All roles created:
-  ![iam-6](./images/iam-6.png)
+  ![iam-6](./images/iam/iam-6.png)
 
 ---
 
@@ -174,9 +174,9 @@ We need 4 roles — one per Lambda. Each gets only the permissions it needs.
 1. Go to **Amazon SNS** → **Topics** → **Create Topic**.
 2. **Type**: Standard.
 3. **Name**: `order-events`.
-  ![sns-1](./images/sns-1.png)
+  ![sns-1](./images/sns/sns-1.png)
 4. Leave everything else default → **Create Topic**.
-  ![sns-2](./images/sns-2.png)
+  ![sns-2](./images/sns/sns-2.png)
 5. **Copy the Topic ARN**
 
 ### Update IAM Role with Exact ARN
@@ -184,9 +184,9 @@ We need 4 roles — one per Lambda. Each gets only the permissions it needs.
 1. Go to **IAM** → **Roles** → `order-intake-role`.
 2. Edit the `allow-sns-publish` inline policy.
 3. Replace `"Resource": "*"` with `"Resource": "<your-sns-topic-arn>"`.
-  ![sns-3](./images/sns-3.png)
+  ![sns-3](./images/sns/sns-3.png)
 4. Save changes.
-  ![sns-4](./images/sns-4.png)
+  ![sns-4](./images/sns/sns-4.png)
 
 ---
 
@@ -202,15 +202,15 @@ Repeat these steps 3 times for each DLQ:
 1. Go to **Amazon SQS** → **Create Queue**.
 2. **Type**: Standard.
 3. **Name**: `orders-db-dlq`.
-  ![sqs-1](./images/sqs-1.png)
-  ![sqs-2](./images/sqs-2.png)
+  ![sqs-1](./images/sqs/sqs-1.png)
+  ![sqs-2](./images/sqs/sqs-2.png)
 4. Leave defaults → **Create Queue**.
 
 **DLQ 2:** Same steps, name: `orders-email-dlq`. Copy ARN.
 
 **DLQ 3:** Same steps, name: `orders-analytics-dlq`. Copy ARN.
 
-  ![sqs-3](./images/sqs-3.png)
+  ![sqs-3](./images/sqs/sqs-3.png)
 
 ---
 
@@ -218,13 +218,13 @@ Repeat these steps 3 times for each DLQ:
 
 **Queue 1 — orders-db:**
 1. **Create Queue** → Standard → Name: `orders-db`.
-  ![sqs-4](./images/sqs-4.png)
+  ![sqs-4](./images/sqs/sqs-4.png)
 2. Scroll to **Dead-letter queue** section → **Enable**.
 3. Select the ARN of `orders-db-dlq`.
 4. **Maximum receives**: `3`.
-  ![sqs-5](./images/sqs-5.png)
+  ![sqs-5](./images/sqs/sqs-5.png)
 5. **Create Queue**.
-  ![sqs-6](./images/sqs-6.png)
+  ![sqs-6](./images/sqs/sqs-6.png)
 
 **Queue 2 — orders-email:**
 1. **Create Queue** → Standard → Name: `orders-email`.
@@ -236,7 +236,7 @@ Repeat these steps 3 times for each DLQ:
 2. Enable DLQ → select ARN of `orders-analytics-dlq` → Max receives: `3`.
 3. **Create Queue**.
 
-![sqs-7](./images/sqs-7.png)
+![sqs-7](./images/sqs/sqs-7.png)
 
 ---
 
@@ -248,15 +248,15 @@ Do this for all 3 queues.
 1. Go to **SNS** → **Topics** → `order-events` → **Create Subscription**.
 2. **Protocol**: Amazon SQS.
 3. **Endpoint**: select the ARN of `orders-db` queue.
-  ![sns-5](./images/sns-5.png)
+  ![sns-5](./images/sns/sns-5.png)
 4. **Create Subscription**.
-  ![sns-6](./images/sns-6.png)
+  ![sns-6](./images/sns/sns-6.png)
 
 **For orders-email:** Same steps, endpoint = ARN of `orders-email`.
 
 **For orders-analytics:** Same steps, endpoint = ARN of `orders-analytics`.
 
-![sns-7](./images/sns-7.png)
+![sns-7](./images/sns/sns-7.png)
 
 ---
 
@@ -268,7 +268,7 @@ Do this for all 3 queues.
 2. **Name**: `order-intake`.
 3. **Runtime**: Python 3.12.
 4. **Execution role**: Use existing → `order-intake-role`.
-  ![lambda-1](./images/lambda-1.png)
+  ![lambda-1](./images/lambda/lambda-1.png)
 5. **Create Function**.
 6. Replace the code with:
    ```python
@@ -310,9 +310,9 @@ Do this for all 3 queues.
 7. Click **Deploy**.
 8. Go to **Configuration** → **Environment Variables** → **Edit**.
 9. Add: Key = `SNS_TOPIC_ARN`, Value = your SNS topic ARN.
-  ![lambda-2](./images/lambda-2.png)  
+  ![lambda-2](./images/lambda/lambda-2.png)
 10. **Save**.
-  ![lambda-3](./images/lambda-3.png)
+  ![lambda-3](./images/lambda/lambda-3.png)
 
 ---
 
@@ -416,7 +416,7 @@ Do this for all 3 queues.
 3. **Deploy**.
 
 ### All Lambdas created:
-  ![lambda-4](./images/lambda-4.png)
+  ![lambda-4](./images/lambda/lambda-4.png)
 
 ---
 
@@ -428,21 +428,21 @@ Do this for all 3 queues.
 2. **Source**: SQS.
 3. **Queue**: select `orders-db`.
 4. **Batch size**: 10.
-  ![lambda-5](./images/lambda-5.png)
+  ![lambda-5](./images/lambda/lambda-5.png)
 5. **Add**.
-  ![lambda-6](./images/lambda-6.png)
+  ![lambda-6](./images/lambda/lambda-6.png)
 
 ### 8.2 orders-email → order-email-sender
 
 1. Go to `order-email-sender` → **Triggers** → **Add Trigger**.
 2. **Source**: SQS → select `orders-email` → Batch size: 10 → **Add**.
-  ![lambda-7](./images/lambda-7.png)
+  ![lambda-7](./images/lambda/lambda-7.png)
 
 ### 8.3 orders-analytics → order-analytics-logger
 
 1. Go to `order-analytics-logger` → **Triggers** → **Add Trigger**.
 2. **Source**: SQS → select `orders-analytics` → Batch size: 10 → **Add**.
-  ![lambda-8](./images/lambda-8.png)
+  ![lambda-8](./images/lambda/lambda-8.png)
 
 ---
 
@@ -451,17 +451,17 @@ Do this for all 3 queues.
 1. Go to **API Gateway** → **Create API** → **HTTP API** → **Build**.
 2. **Integrations**: Add integration → Lambda → select `order-intake`.
 3. **API Name**: `order-api` → **Next**.
-  ![api-gateway-1](./images/api-gateway-1.png)
+  ![api-gateway-1](./images/api-gateway/api-gateway-1.png)
 4. **Routes**: Configure route:
    - Method: `POST`
    - Path: `/orders`
    - Integration target: `order-intake`
-   ![api-gateway-2](./images/api-gateway-2.png)
+   ![api-gateway-2](./images/api-gateway/api-gateway-2.png)
 5. **Next** → Stage name: `prod`, enable **Auto-deploy**.
-  ![api-gateway-3](./images/api-gateway-3.png)
+  ![api-gateway-3](./images/api-gateway/api-gateway-3.png)
 6. **Review & Create**.
-  ![api-gateway-4](./images/api-gateway-4.png)
-  ![api-gateway-5](./images/api-gateway-5.png)
+  ![api-gateway-4](./images/api-gateway/api-gateway-4.png)
+  ![api-gateway-5](./images/api-gateway/api-gateway-5.png)
 
 ### Enable CORS
 
@@ -469,9 +469,9 @@ Do this for all 3 queues.
 2. **Access-Control-Allow-Origin**: `*`
 3. **Access-Control-Allow-Methods**: `POST`
 4. **Access-Control-Allow-Headers**: `content-type`
-  ![api-gateway-6](./images/api-gateway-6.png)
+  ![api-gateway-6](./images/api-gateway/api-gateway-6.png)
 5. **Save**.
-  ![api-gateway-7](./images/api-gateway-7.png)
+  ![api-gateway-7](./images/api-gateway/api-gateway-7.png)
 
 ---
 
@@ -483,16 +483,16 @@ Repeat these steps for each of the 3 DLQs using the names and descriptions from 
 
 1. Go to **CloudWatch** → **Alarms** → **Create Alarm**.
 2. **Select Metric** → SQS → Queue Metrics → find the DLQ → `ApproximateNumberOfMessagesVisible`.
-  ![alarm-1](./images/alarm-1.png)
+  ![alarm-1](./images/cloudwatch/alarm-1.png)
 3. **Statistic**: Maximum, **Period**: 1 minute.
-  ![alarm-2](./images/alarm-2.png)
+  ![alarm-2](./images/cloudwatch/alarm-2.png)
 4. **Condition**: Greater than or equal to `1`.
-  ![alarm-3](./images/alarm-3.png)
+  ![alarm-3](./images/cloudwatch/alarm-3.png)
 5. **Notification**: First alarm → create new SNS topic `dlq-alerts` → enter your email. Remaining alarms → select existing `dlq-alerts` topic.
-  ![alarm-4](./images/alarm-4.png)
-  ![alarm-5](./images/alarm-5.png)
+  ![alarm-4](./images/cloudwatch/alarm-4.png)
+  ![alarm-5](./images/cloudwatch/alarm-5.png)
 6. **Alarm name** and **Description**: use the table below.
-  ![alarm-6](./images/alarm-6.png)
+  ![alarm-6](./images/cloudwatch/alarm-6.png)
 7. **Create Alarm**. On the first alarm, confirm the subscription email AWS sends you.
 
 
@@ -503,7 +503,7 @@ Repeat these steps for each of the 3 DLQs using the names and descriptions from 
 | `dlq-orders-analytics-alarm` | `orders-analytics-dlq` | `Order analytics logging failed after 3 retries. **Action:** Check /aws/lambda/order-analytics-logger logs in CloudWatch.` |
 
 ### All alarms created:
-![alarm-7](./images/alarm-7.png)
+![alarm-7](./images/cloudwatch/alarm-7.png)
 
 ---
 
@@ -531,7 +531,7 @@ Expected response:
 {"order_id": "some-uuid", "status": "RECEIVED"}
 ```
 
-![curl](./images/curl.png)
+![curl](./images/testing/curl.png)
 
 ### Verify Each Step
 
@@ -544,15 +544,15 @@ Expected response:
 | SQS processed | SQS → each queue → **Monitoring** tab → Messages Received |
 
 #### Dynamodb Entry:
-  ![dynamodb](./images/dynamodb.png)
+  ![dynamodb](./images/testing/dynamodb.png)
 
 
 #### Email:
-  ![email](./images/email.png)
+  ![email](./images/testing/email.png)
 
 
 #### CloudWatch Log Groups:
-  ![log-groups](./images/log-groups.png)
+  ![log-groups](./images/cloudwatch/log-groups.png)
 
 ---
 
@@ -587,13 +587,13 @@ curl -X POST <your-api-gateway-invoke-url>/prod/orders \
 
 - Go to **SQS** → `orders-db` → **Monitoring** tab — you'll see messages received, then disappearing after 3 failed retries
 - Go to `orders-db-dlq` → **Messages Available** should show `1`
-  ![orders-queue-monitor](./images/orders-queue-monitor.png)
+  ![orders-queue-monitor](./images/testing/orders-queue-monitor.png)
 - Also check `orders-db-dlq` → **Monitoring** tab
-  ![orders-dlq-monitor](./images/orders-dlq-monitor.png)
+  ![orders-dlq-monitor](./images/testing/orders-dlq-monitor.png)
 - Wait ~1 minute → **CloudWatch** → **Alarms** → `dlq-orders-db-alarm` goes **In alarm**
-  ![dlq-alarm](./images/dlq-alarm.png)
+  ![dlq-alarm](./images/testing/dlq-alarm.png)
 - You'll also receive an alert email from the `dlq-alerts` SNS topic
-  ![dlq-alert-email](./images/dlq-alert-email.png)
+  ![dlq-alert-email](./images/testing/dlq-alert-email.png)
 
 **Step 4 — Fix and redrive**
 

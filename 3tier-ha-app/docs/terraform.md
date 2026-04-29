@@ -20,7 +20,7 @@ Name the SSH key as `ssh-key` and use the public key to set up access. The publi
 
 > **Note:** Copy and paste the SSH public key into the Terraform `aws_key_pair` resource in [launch_template.tf](./infra/launch-template.tf)
 
-![tf-pub-key](./images/tf-pub-key.png)
+![tf-pub-key](./images/terraform/tf-pub-key.png)
 
 ### 3. **Initialize Terraform**
 
@@ -56,21 +56,21 @@ Deploy the infrastructure with the following command. This will create all the r
 terraform apply --auto-approve
 ```
 
-![tf-output](./images/tf-output.png)
+![tf-output](./images/terraform/tf-output.png)
 
 ### 7. **Accessing Your Load Balancer**
 
 After deployment, wait until the target group gets healthy (It will take some time). Check the output for the **ALB DNS name**. Open this in your web browser to verify that the setup is working.
 
-![tf-tg-status](./images/tf-tg-status.png)
+![tf-tg-status](./images/terraform/tf-tg-status.png)
 
 **Paste the alb dns in the browser**
-![app-home](./images/app-home.png)
-![app-config](./images/app-config.png)
+![app-home](./images/app/app-home.png)
+![app-config](./images/app/app-config.png)
 
 ### 8. Checking High Avalability
 Start the stress test for the application
-![app-stress-test](./images/app-stress-test.png)
+![app-stress-test](./images/app/app-stress-test.png)
 
 Now verify the number of instances in the ec2 dashboard - They got populated for 2 to 4
 

@@ -22,11 +22,11 @@ Complete step-by-step guide to manually set up the AI Document Summarizer.
   - Bucket Type: **General-purpose** (default).
   - Buckert Namespace -> Select **Account Regional Namespace**.
 2. **Bucket name**: `ai-doc-summarizer`.
-  ![s3-1](./images/s3-1.png)
+  ![s3-1](./images/s3/s3-1.png)
 3. **Block Public Access**: leave all options **enabled** (default) — the bucket stays private.
 4. Leave everything else default → **Create bucket**.
 5. Open the bucket → **Create folder** → name it `documents` → **Create folder**.
-  ![s3-2](./images/s3-2.png)
+  ![s3-2](./images/s3/s3-2.png)
 
 > The `documents/` folder prefix is used to scope the S3 event trigger — only files uploaded here will trigger the processor Lambda.
 
@@ -54,9 +54,9 @@ This role is for the processor Lambda — it needs to read from S3, call Textrac
 
 1. Go to **IAM** → **Roles** → **Create role**.
 2. **Trusted entity**: AWS service → **Lambda** → **Next**.
-  ![iam-1](./images/iam-1.png)
+  ![iam-1](./images/iam/iam-1.png)
 3. Attach managed policy: **AWSLambdaBasicExecutionRole** → **Next**.
-  ![iam-2](./images/iam-2.png)
+  ![iam-2](./images/iam/iam-2.png)
 4. **Role name**: `doc-processor-role` → **Create role**.
 5. Open the role → **Add permissions** → **Create inline policy** → **JSON** tab:
 
@@ -106,13 +106,13 @@ This role is for the processor Lambda — it needs to read from S3, call Textrac
 
 > Replace `<bucket-name>`, `<your-region>`, `<your-account-id>`, and `<model-id-from-console>` with your actual values.
 
-  ![iam-3](./images/iam-3.png)
+  ![iam-3](./images/iam/iam-3.png)
 
 > **Why `BedrockMarketplaceSubscribe`?** Current Claude models (Haiku 4.5 and newer) are distributed through AWS Marketplace. On the very first invocation, Bedrock auto-creates a Marketplace subscription for your account — this requires `aws-marketplace:Subscribe`. This is a **one-time setup per account**: after the first successful call the subscription exists and these permissions are never exercised again. All billing still goes through your AWS bill, not a separate Anthropic account.
 >
 > `textract:DetectDocumentText` does not support resource-level scoping — `"Resource": "*"` is correct per AWS IAM documentation.
 
-  ![iam-4](./images/iam-4.png)
+  ![iam-4](./images/iam/iam-4.png)
 
 6. **Policy name**: `doc-processor-policy` → **Create policy**.
 
@@ -147,7 +147,7 @@ This role is for the API handler Lambda — it only needs to read from DynamoDB.
 
 
 ### All IAM roles created:
-![iam-5](./images/iam-5.png)
+![iam-5](./images/iam/iam-5.png)
 
 ---
 
@@ -164,7 +164,7 @@ This role is for the API handler Lambda — it only needs to read from DynamoDB.
 2. **Function name**: `doc-processor`.
 3. **Runtime**: Python 3.12.
 4. **Execution role**: select **Use an existing role** → `doc-processor-role`.
-  ![lambda-1](./images/lambda-1.png)
+  ![lambda-1](./images/lambda/lambda-1.png)
 5. **Create function**.
 6. Replace the default code with:
 
@@ -280,14 +280,14 @@ def lambda_handler(event, context):
     return {'statusCode': 200}
 ```
 
-  ![lambda-2](./images/lambda-2.png)
+  ![lambda-2](./images/lambda/lambda-2.png)
 
 7. Click **Deploy**.
 8. Go to **Configuration** → **General configuration** → **Edit**:
    - **Timeout**: set to `2 min 0 sec` (Textract + Bedrock calls combined can take several seconds for larger documents).
    - **Save**.
 
-   ![lambda-3](./images/lambda-3.png)
+   ![lambda-3](./images/lambda/lambda-3.png)
 
 > **Note on Bedrock model access:** Current Claude models are AWS Marketplace models. On the **first invocation**, Bedrock auto-creates a Marketplace subscription for your account using the `aws-marketplace:Subscribe` permission in the role. This takes ~2 minutes to complete — if you get an `AccessDeniedException` on the first call, wait 2 minutes and re-upload the file to trigger the Lambda again. All subsequent calls go through immediately. Billing stays on your AWS bill.
 
@@ -342,11 +342,11 @@ def lambda_handler(event, context):
 4. **Event types**: `PUT` (covers standard uploads).
 5. **Prefix**: `documents/` — restricts the trigger to only files in the `documents/` folder.
 6. Check the acknowledgment checkbox → **Add**.
-  ![lambda-4](./images/lambda-4.png)
+  ![lambda-4](./images/lambda/lambda-4.png)
 
 > The prefix filter is critical. Without it, any file written anywhere in the bucket (including future outputs) would trigger the Lambda.
 
-  ![lambda-5](./images/lambda-5.png)
+  ![lambda-5](./images/lambda/lambda-5.png)
 
 ---
 
@@ -360,7 +360,7 @@ def lambda_handler(event, context):
    - **Lambda function**: `doc-api-handler`.
    - Click **Add**.
 3. **API name**: `doc-summarizer-api`.
-  ![apigtw-1](./images/apigtw-1.png)
+  ![apigtw-1](./images/api-gateway/apigtw-1.png)
 4. Click **Next** → **Configure routes**. Add two routes:
 
    | Method | Path | Integration |
@@ -368,11 +368,11 @@ def lambda_handler(event, context):
    | GET | `/summaries` | `doc-api-handler` |
    | GET | `/summaries/{document_id}` | `doc-api-handler` |
 
-   ![apigtw-2](./images/apigtw-2.png)
+   ![apigtw-2](./images/api-gateway/apigtw-2.png)
 
 5. Click **Next** → **Stage**: leave `$default`, enable **Auto-deploy** → **Next** → **Create**.
-  ![apigtw-3](./images/apigtw-3.png)
-  ![apigtw-4](./images/apigtw-4.png)
+  ![apigtw-3](./images/api-gateway/apigtw-3.png)
+  ![apigtw-4](./images/api-gateway/apigtw-4.png)
 6. **Copy the Invoke URL** from the API overview — you'll use this to test.
 
 ---
@@ -406,7 +406,7 @@ aws s3 cp sample-contract.txt s3://<bucket-name>/documents/sample-contract.txt
 
 Or upload via the S3 console: open the bucket → `documents/` folder → **Upload** → select the file → **Upload**.
 
-  ![s3-upload-1](./images/s3-upload-1.png)
+  ![s3-upload-1](./images/s3/s3-upload-1.png)
 
 ---
 
@@ -420,7 +420,7 @@ Expected log line:
 Processed: documents/sample-contract.txt → document_id: a3f9c1d2-...
 ```
 
-![cloudwatch-logs-1](./images/cloudwatch-logs-1.png)
+![cloudwatch-logs-1](./images/cloudwatch/cloudwatch-logs-1.png)
 
 ---
 
@@ -429,7 +429,7 @@ Processed: documents/sample-contract.txt → document_id: a3f9c1d2-...
 1. Go to **DynamoDB** → **Tables** → `document-summaries` → **Explore table items**.
 2. You should see one item with `status: DONE` and a populated `summary` object.
 
-![dynamodb-1](./images/dynamodb-1.png)
+![dynamodb-1](./images/dynamodb/dynamodb-1.png)
 
 ---
 
@@ -462,7 +462,7 @@ Expected response:
 ]
 ```
 
-![curl-1](./images/curl-1.png)
+![curl-1](./images/testing/curl-1.png)
 
 Fetch by document ID:
 ```bash
@@ -479,17 +479,17 @@ Upload any PDF you have — a contract, a report, an invoice — to the `documen
 aws s3 cp your-document.pdf s3://<bucket-name>/documents/your-document.pdf
 ```
 
-![s3-upload-2](./images/s3-upload-2.png)
+![s3-upload-2](./images/s3/s3-upload-2.png)
 
 The Lambda will route it through Textract automatically based on the `.pdf` extension. Check CloudWatch logs to confirm Textract was called, then fetch the summary via the API the same way.
 
 > Textract handles both text-based PDFs (where text is stored as characters) and scanned PDFs (where pages are images). A plain PDF parser would return empty text on scanned pages — Textract uses OCR to handle both.
 
-![cloudwatch-logs-2](./images/cloudwatch-logs-2.png)
+![cloudwatch-logs-2](./images/cloudwatch/cloudwatch-logs-2.png.png)
 
-![dynamodb-2](./images/dynamodb-2.png)
+![dynamodb-2](./images/dynamodb/dynamodb-2.png)
 
-![curl-2](./images/curl-2.png)
+![curl-2](./images/testing/curl-2.png)
 
 ---
 

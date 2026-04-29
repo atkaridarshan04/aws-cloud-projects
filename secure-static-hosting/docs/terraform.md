@@ -65,7 +65,7 @@ terraform apply
 
 Review the plan and confirm with `yes` when prompted.
 
-![tf-1](./images/tf-1.png)
+![tf-1](./images/terraform/tf-1.png)
 
 ---
 
@@ -79,7 +79,7 @@ sh ./upload_to_s3.sh <bucket-name>
 
 Replace `<bucket-name>` with the actual name used (check the `outputs.tf` or `terraform apply` output).
 
-![tf-2](./images/tf-2.png)
+![tf-2](./images/terraform/tf-2.png)
 
 ## 🔍 Verifying the Deployment
 
@@ -94,7 +94,7 @@ terraform output
 
 Copy the CDN domain and open it in your browser.
 
-![tf-3](./images/tf-3.png)
+![tf-3](./images/terraform/tf-3.png)
 
 
 ## Clean Up Resources

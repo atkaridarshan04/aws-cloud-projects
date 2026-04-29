@@ -63,7 +63,7 @@ terraform apply --auto-approve
 ```
 
 **Expected Output:**
-![Terraform Outputs](./assets/tf_outputs.png)
+![Terraform Outputs](./assets/terraform/tf_outputs.png)
 
 ## 🔗 Post-Deployment Configuration
 
@@ -73,7 +73,7 @@ terraform apply --auto-approve
 2. Find your pipeline and click on the **Source** stage
 3. **Approve the GitHub connection** when prompted
 
-![GitHub Connection](./assets/gh-connection.png)
+![GitHub Connection](./assets/github/gh-connection.png)
 
 4. **Retry the Source stage** to proceed with the pipeline
 
@@ -91,33 +91,33 @@ terraform output load_balancer_url
 ### **CodePipeline Execution**
 Monitor your CI/CD pipeline:
 
-![CodePipeline](./assets/tf_codepipeline.png)
-![Pipeline Execution](./assets/tf_codepipeline_execution.png)
+![CodePipeline](./assets/terraform/tf_codepipeline.png)
+![Pipeline Execution](./assets/terraform/tf_codepipeline_execution.png)
 
 ### **CodeBuild Projects**
 View build configurations:
 
-![CodeBuild](./assets/tf_codebuild.png)
+![CodeBuild](./assets/terraform/tf_codebuild.png)
 
 ### **ECR Repository**
 Check container images:
 
-![ECR Repository](./assets/tf_ecr.png)
+![ECR Repository](./assets/terraform/tf_ecr.png)
 
 ### **ECS Service**
 Monitor running tasks:
 
-![ECS Service](./assets/tf_ecs.png)
+![ECS Service](./assets/terraform/tf_ecs.png)
 
 ### **VPC Endpoints**
 Verify private connectivity:
 
-![VPC Endpoints](./assets/tf_endpoints.png)
+![VPC Endpoints](./assets/terraform/tf_endpoints.png)
 
 ### **S3 Artifacts Bucket**
 Pipeline artifact storage:
 
-![S3 Bucket](./assets/tf_s3.png)
+![S3 Bucket](./assets/terraform/tf_s3.png)
 
 ## 🔄 CI/CD Pipeline Testing
 

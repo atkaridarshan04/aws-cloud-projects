@@ -36,7 +36,7 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </td>
 <td width="60%" style="border: 2px solid #FF9900; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
 
-<img src="./3tier-ha-app/docs/images/architecture.png" alt="3-Tier Architecture" width="100%">
+<img src="./3tier-ha-app/docs/images/architecture/architecture.png" alt="3-Tier Architecture" width="100%">
 
 </td>
 </tr>
@@ -59,7 +59,7 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </td>
 <td width="60%" style="border: 2px solid #FF6B35; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
 
-<img src="./serverless-url-shortener/docs/images/serverless-url-shorterner-architecture-light.png" alt="Serverless Architecture" width="100%">
+<img src="./serverless-url-shortener/docs/images/architecture/serverless-url-shorterner-architecture-light.png" alt="Serverless Architecture" width="100%">
 
 </td>
 </tr>
@@ -82,7 +82,7 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </td>
 <td width="60%" style="border: 2px solid #4A90E2; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
 
-<img src="./secure-static-hosting/docs/images/s3-cloudfront-architecture.png" alt="Static Hosting Architecture" width="100%">
+<img src="./secure-static-hosting/docs/images/architecture/s3-cloudfront-architecture.png" alt="Static Hosting Architecture" width="100%">
 
 </td>
 </tr>
@@ -103,7 +103,7 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </td>
 <td width="60%" style="border: 2px solid #D24939; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
 
-<img src="./ecs-cicd-pipeline/docs/assets/ecs_cicd_architecture_light.png" alt="ECS CI/CD Architecture" width="100%">
+<img src="./ecs-cicd-pipeline/docs/assets/architecture/ecs_cicd_architecture_light.png" alt="ECS CI/CD Architecture" width="100%">
 
 </td>
 </tr>
@@ -125,7 +125,7 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </td>
 <td width="60%" style="border: 2px solid #28A745; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
 
-<img src="./terraform-github-actions-deploy/assets/tgad_architecture_light.png" alt="GitHub Actions CI/CD Architecture" width="100%">
+<img src="./terraform-github-actions-deploy/assets/architecture/tgad_architecture_light.png" alt="GitHub Actions CI/CD Architecture" width="100%">
 
 </td>
 </tr>
@@ -146,7 +146,7 @@ This repository contains **AWS cloud projects** demonstrating various services a
 </td>
 <td width="60%" style="border: 2px solid #326CE5; margin-left:20px; padding: 15px; vertical-align: middle; text-align: center;">
 
-<img src="./eks-fargate-deployment/images/eks-farget-alb-architecture-dark.png" alt="EKS Fargate Architecture" width="100%">
+<img src="./eks-fargate-deployment/images/architecture/eks-farget-alb-architecture-dark.png" alt="EKS Fargate Architecture" width="100%">
 
 </td>
 </tr>
