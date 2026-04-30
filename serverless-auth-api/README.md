@@ -176,4 +176,4 @@ All tenants share one DynamoDB table. Every item has `tenant_id` as the partitio
 ## 🚀 Deployment Options
 
 - **Console** — follow [docs/console.md](./docs/console.md) for manual step-by-step setup
-<!-- - **Terraform** — follow [docs/terraform.md](./docs/terraform.md) for full IaC deployment -->
+- **Terraform** — follow [docs/terraform.md](./docs/terraform.md) for full IaC deployment
