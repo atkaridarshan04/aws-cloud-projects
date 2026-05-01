@@ -235,3 +235,9 @@ eksctl delete cluster --name demo-cluster --region ap-south-1
 ```
 
 ---
+
+## 🚀 Terraform Deployment
+
+Prefer IaC? Follow [docs/terraform.md](./docs/terraform.md) to provision the full stack with Terraform and deploy the app with `helm` + `kubectl`.
+
+---
