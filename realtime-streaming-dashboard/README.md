@@ -187,3 +187,4 @@ https://github.com/user-attachments/assets/dc9b8d95-fe6a-4d7f-9783-b092786a6b48
 ## 🚀 Deployment Options
 
 - **Console** — follow [docs/console.md](./docs/console.md) for manual step-by-step setup
+- **Terraform** — follow [docs/terraform.md](./docs/terraform.md) for full IaC deployment
