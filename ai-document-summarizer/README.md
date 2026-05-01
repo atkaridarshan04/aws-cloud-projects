@@ -162,3 +162,4 @@ API Gateway
 ## 🚀 Deployment Options
 
 - **Console** — follow [docs/console.md](./docs/console.md) for manual step-by-step setup
+- **Terraform** — follow [docs/terraform.md](./docs/terraform.md) for full IaC deployment

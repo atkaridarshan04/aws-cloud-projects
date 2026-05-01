@@ -159,6 +159,7 @@ This role is for the API handler Lambda — it only needs to read from DynamoDB.
 
 > ⚠️ **Before writing the Lambda code — get the correct model ID from the console.**
 > Model IDs change as new versions release. Go to **Amazon Bedrock** → **Model catalog** → search **Claude** → open the model card for the latest Claude Haiku → copy the exact **Model ID** shown there. Replace `<model-id-from-console>` in both the Lambda code and the IAM policy resource ARN (Step 3.1) with the ID you copied.
+![bedrock-model-id](./images/bedrock/bedrock-model-id.png)
 
 1. Go to **Lambda** → **Create function** → **Author from scratch**.
 2. **Function name**: `doc-processor`.
