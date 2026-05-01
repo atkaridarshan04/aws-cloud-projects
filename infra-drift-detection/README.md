@@ -216,3 +216,4 @@ Time:     2026-04-27T01:00:05Z
 ## 🚀 Deployment Options
 
 - **Console** — follow [docs/console.md](./docs/console.md) for manual step-by-step setup
+- **Terraform** — follow [docs/terraform.md](./docs/terraform.md) for full IaC deployment
